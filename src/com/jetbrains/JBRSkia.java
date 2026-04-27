@@ -126,6 +126,20 @@ public interface JBRSkia {
         Rectangle getUserSpaceClip();
 
         /**
+         * Renders a JBR-owned diagnostic frame into this scope.
+         *
+         * <p>This PoC-only method proves that Skiko/CMP can route painting through a JBR-owned scope
+         * without wrapping the destination texture with Skiko's own Metal context. The production fast
+         * path replaces this Java-level diagnostic with the versioned native Skia C ABI.</p>
+         *
+         * @param width user-space width of the component being painted.
+         * @param height user-space height of the component being painted.
+         * @param frameTimeNanos frame timestamp supplied by the caller.
+         * @return {@code true} when the diagnostic frame was painted.
+         */
+        boolean renderDiagnosticFrame(int width, int height, long frameTimeNanos);
+
+        /**
          * Flushes Skia work for this scope. Calling after {@link #close()} is invalid.
          */
         void flush();
