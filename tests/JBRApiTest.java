@@ -40,6 +40,7 @@ public class JBRApiTest {
     public static void main(String[] args) throws Exception {
         IGNORED_SERVICES.add("com.jetbrains.RelativePointerMovement"); // only supported for the WLToolkit
         IGNORED_SERVICES.add("com.jetbrains.RoundedCornersManager");
+        IGNORED_SERVICES.add("com.jetbrains.JBRSkia"); // experimental, only supported by the Skia interop runtime
         IGNORED_SERVICES.add("com.jetbrains.SharedTextures"); // only supported for the Metal pipeline
         IGNORED_SERVICES.add("com.jetbrains.Vulkan"); // only supported for the WLToolkit
         String os = System.getProperty("os.name").toLowerCase();

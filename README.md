@@ -88,3 +88,14 @@ API and implementation versions can be retrieved from the `JBR` class:
 * [JBR API documentation](https://jetbrains.github.io/JetBrainsRuntimeApi)
 * [JBR API development guide](CONTRIBUTING.md)
 * [JetBrainsRuntime (JBR)](https://github.com/JetBrains/JetBrainsRuntime)
+
+## Experimental Skia Interop
+
+`JBRSkia` is an experimental macOS-first service for tightly versioned interop
+between JBR and Skiko. It exposes a paint-scoped `ScopedSkiaCanvas` so Compose
+can eventually draw into the JBR-owned Metal/Skia destination during Swing
+painting.
+
+Clients must read `JBRSkia.ABI_ID` and `JBRSkia.BUILD_ID` reflectively before
+acquiring `JBR.getJBRSkia()`. If either value is incompatible, or if the service
+is unavailable, clients must fall back to their existing rendering path.
