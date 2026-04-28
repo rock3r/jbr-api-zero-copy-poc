@@ -67,6 +67,11 @@ public interface JBRSkia {
     int COMMAND_STROKE_OVAL = Integer.parseInt("5");
 
     /**
+     * Command-list operation: clear a rectangle using destination clear blending.
+     */
+    int COMMAND_CLEAR_RECT = Integer.parseInt("6");
+
+    /**
      * Attempts to acquire a Skia paint scope for the supplied Java2D graphics.
      *
      * <p>The returned scope is valid only for the current paint call and must be closed before returning
@@ -177,6 +182,7 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_STROKE_LINE}: {@code [op, argb, x1, y1, x2, y2, strokeWidth]}</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_OVAL}: {@code [op, argb, x, y, width, height]}</li>
          *     <li>{@link JBRSkia#COMMAND_STROKE_OVAL}: {@code [op, argb, x, y, width, height, strokeWidth]}</li>
+         *     <li>{@link JBRSkia#COMMAND_CLEAR_RECT}: {@code [op, x, y, width, height]}</li>
          * </ul>
          *
          * @param width user-space width of the component being painted.
