@@ -313,6 +313,21 @@ public interface JBRSkia {
         boolean renderCommandFrame(int width, int height, long frameTimeNanos, int[] commands);
 
         /**
+         * Renders a command stream carried as little-endian 32-bit words.
+         *
+         * <p>This PoC-only method is a stepping stone from the temporary Java {@code int[]} carrier
+         * toward a direct native memory block. It uses the same stream and record layout documented
+         * by {@link #renderCommandFrame(int, int, long, int[])}.</p>
+         *
+         * @param width user-space width of the component being painted.
+         * @param height user-space height of the component being painted.
+         * @param frameTimeNanos frame timestamp supplied by the caller.
+         * @param commands little-endian encoded command stream.
+         * @return {@code true} when the command frame was painted.
+         */
+        boolean renderCommandBufferFrame(int width, int height, long frameTimeNanos, byte[] commands);
+
+        /**
          * Replays a serialized Skia picture into this scope.
          *
          * <p>This PoC method lets Skiko record real rendering into an {@code SkPicture}, serialize it
