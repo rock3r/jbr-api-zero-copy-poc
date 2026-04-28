@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("7");
+    int ABI_ID = Integer.parseInt("8");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("7");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("8");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -74,9 +74,14 @@ public interface JBRSkia {
     int COMMAND_RECORD_HEADER_SIZE_BYTES = Integer.parseInt("12");
 
     /**
-     * Command-record flags value for the current unextended record format.
+     * Command-record flags value for records without optional paint flags.
      */
     int COMMAND_RECORD_FLAGS_NONE = Integer.parseInt("0");
+
+    /**
+     * Command-record flag: draw this record with antialiasing enabled where the operation supports it.
+     */
+    int COMMAND_RECORD_FLAG_ANTIALIAS = Integer.parseInt("1");
 
     /**
      * Capability bit: command streams may clear/fill the current destination.
@@ -122,6 +127,11 @@ public interface JBRSkia {
      * Capability bit: command coordinates are expressed in Swing user-space pixels.
      */
     int COMMAND_CAP_USER_SPACE_COORDINATES = Integer.parseInt("256");
+
+    /**
+     * Capability bit: command records may carry per-record antialiasing flags.
+     */
+    int COMMAND_CAP_RECORD_ANTIALIAS = Integer.parseInt("512");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -291,7 +301,8 @@ public interface JBRSkia {
          * <p>Every command record starts with {@code [op, recordByteLength, recordFlags]}, where
          * {@code recordByteLength} is the total byte length of the aligned command record including
          * the three-field header, and {@code recordFlags} must be
-         * {@link JBRSkia#COMMAND_RECORD_FLAGS_NONE} for this ABI.</p>
+         * either {@link JBRSkia#COMMAND_RECORD_FLAGS_NONE} or
+         * {@link JBRSkia#COMMAND_RECORD_FLAG_ANTIALIAS} for this ABI.</p>
          *
          * <ul>
          *     <li>{@link JBRSkia#COMMAND_CLEAR}: {@code [op, 16, 0, argb]}</li>
