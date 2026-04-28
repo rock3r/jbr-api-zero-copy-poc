@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("8");
+    int ABI_ID = Integer.parseInt("9");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("8");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("9");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -132,6 +132,11 @@ public interface JBRSkia {
      * Capability bit: command records may carry per-record antialiasing flags.
      */
     int COMMAND_CAP_RECORD_ANTIALIAS = Integer.parseInt("512");
+
+    /**
+     * Capability bit: stroked command records carry cap, join, and fixed-point miter metadata.
+     */
+    int COMMAND_CAP_STROKE_METADATA = Integer.parseInt("1024");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -307,9 +312,9 @@ public interface JBRSkia {
          * <ul>
          *     <li>{@link JBRSkia#COMMAND_CLEAR}: {@code [op, 16, 0, argb]}</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT}: {@code [op, 36, 0, argb, x, y, width, height, radius]}</li>
-         *     <li>{@link JBRSkia#COMMAND_STROKE_LINE}: {@code [op, 36, 0, argb, x1, y1, x2, y2, strokeWidth]}</li>
+         *     <li>{@link JBRSkia#COMMAND_STROKE_LINE}: {@code [op, 48, flags, argb, x1, y1, x2, y2, strokeWidth, strokeCap, strokeJoin, strokeMiter1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_OVAL}: {@code [op, 32, 0, argb, x, y, width, height]}</li>
-         *     <li>{@link JBRSkia#COMMAND_STROKE_OVAL}: {@code [op, 36, 0, argb, x, y, width, height, strokeWidth]}</li>
+         *     <li>{@link JBRSkia#COMMAND_STROKE_OVAL}: {@code [op, 48, flags, argb, x, y, width, height, strokeWidth, strokeCap, strokeJoin, strokeMiter1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLEAR_RECT}: {@code [op, 28, 0, x, y, width, height]}</li>
          *     <li>{@link JBRSkia#COMMAND_SAVE}: {@code [op, 12, 0]}</li>
          *     <li>{@link JBRSkia#COMMAND_RESTORE}: {@code [op, 12, 0]}</li>
