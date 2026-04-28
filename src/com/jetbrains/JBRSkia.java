@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("9");
+    int ABI_ID = Integer.parseInt("10");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("9");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("10");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -139,6 +139,11 @@ public interface JBRSkia {
     int COMMAND_CAP_STROKE_METADATA = Integer.parseInt("1024");
 
     /**
+     * Capability bit: command streams can carry translate, scale, and rotate records.
+     */
+    int COMMAND_CAP_BASIC_TRANSFORMS = Integer.parseInt("2048");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -182,6 +187,21 @@ public interface JBRSkia {
      * Command-list operation: intersect the current clip with a rectangle.
      */
     int COMMAND_CLIP_RECT = Integer.parseInt("9");
+
+    /**
+     * Command-list operation: translate the current canvas transform.
+     */
+    int COMMAND_TRANSLATE = Integer.parseInt("10");
+
+    /**
+     * Command-list operation: scale the current canvas transform.
+     */
+    int COMMAND_SCALE = Integer.parseInt("11");
+
+    /**
+     * Command-list operation: rotate the current canvas transform in degrees.
+     */
+    int COMMAND_ROTATE = Integer.parseInt("12");
 
     /**
      * Returns the command stream capabilities supported by this runtime.
@@ -319,6 +339,9 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_SAVE}: {@code [op, 12, 0]}</li>
          *     <li>{@link JBRSkia#COMMAND_RESTORE}: {@code [op, 12, 0]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLIP_RECT}: {@code [op, 28, 0, x, y, width, height]}</li>
+         *     <li>{@link JBRSkia#COMMAND_TRANSLATE}: {@code [op, 20, 0, dx1000, dy1000]}</li>
+         *     <li>{@link JBRSkia#COMMAND_SCALE}: {@code [op, 20, 0, sx1000, sy1000]}</li>
+         *     <li>{@link JBRSkia#COMMAND_ROTATE}: {@code [op, 16, 0, degrees1000]}</li>
          * </ul>
          *
          * @param width user-space width of the component being painted.
