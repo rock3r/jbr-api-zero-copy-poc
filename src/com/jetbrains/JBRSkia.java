@@ -33,13 +33,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("5");
+    int ABI_ID = Integer.parseInt("6");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("5");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("6");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -55,6 +55,17 @@ public interface JBRSkia {
      * Command-stream flags value for the current unextended payload format.
      */
     int COMMAND_STREAM_FLAGS_NONE = Integer.parseInt("0");
+
+    /**
+     * Number of bytes in every command-record header:
+     * {@code [op, recordByteLength, recordFlags]}.
+     */
+    int COMMAND_RECORD_HEADER_SIZE_BYTES = Integer.parseInt("12");
+
+    /**
+     * Command-record flags value for the current unextended record format.
+     */
+    int COMMAND_RECORD_FLAGS_NONE = Integer.parseInt("0");
 
     /**
      * Capability bit: command streams may clear/fill the current destination.
@@ -265,20 +276,21 @@ public interface JBRSkia {
          * {@code [COMMAND_STREAM_MAGIC, ABI_ID, COMMAND_STREAM_FLAGS_NONE, payloadLength]}.
          * {@code payloadLength} is the number of integers after the header.</p>
          *
-         * <p>Every command record starts with {@code [op, recordLength]}, where
-         * {@code recordLength} is the total number of integers in the command record including
-         * {@code op} and {@code recordLength}.</p>
+         * <p>Every command record starts with {@code [op, recordByteLength, recordFlags]}, where
+         * {@code recordByteLength} is the total byte length of the aligned command record including
+         * the three-field header, and {@code recordFlags} must be
+         * {@link JBRSkia#COMMAND_RECORD_FLAGS_NONE} for this ABI.</p>
          *
          * <ul>
-         *     <li>{@link JBRSkia#COMMAND_CLEAR}: {@code [op, 3, argb]}</li>
-         *     <li>{@link JBRSkia#COMMAND_FILL_RECT}: {@code [op, 8, argb, x, y, width, height, radius]}</li>
-         *     <li>{@link JBRSkia#COMMAND_STROKE_LINE}: {@code [op, 8, argb, x1, y1, x2, y2, strokeWidth]}</li>
-         *     <li>{@link JBRSkia#COMMAND_FILL_OVAL}: {@code [op, 7, argb, x, y, width, height]}</li>
-         *     <li>{@link JBRSkia#COMMAND_STROKE_OVAL}: {@code [op, 8, argb, x, y, width, height, strokeWidth]}</li>
-         *     <li>{@link JBRSkia#COMMAND_CLEAR_RECT}: {@code [op, 6, x, y, width, height]}</li>
-         *     <li>{@link JBRSkia#COMMAND_SAVE}: {@code [op, 2]}</li>
-         *     <li>{@link JBRSkia#COMMAND_RESTORE}: {@code [op, 2]}</li>
-         *     <li>{@link JBRSkia#COMMAND_CLIP_RECT}: {@code [op, 6, x, y, width, height]}</li>
+         *     <li>{@link JBRSkia#COMMAND_CLEAR}: {@code [op, 16, 0, argb]}</li>
+         *     <li>{@link JBRSkia#COMMAND_FILL_RECT}: {@code [op, 36, 0, argb, x, y, width, height, radius]}</li>
+         *     <li>{@link JBRSkia#COMMAND_STROKE_LINE}: {@code [op, 36, 0, argb, x1, y1, x2, y2, strokeWidth]}</li>
+         *     <li>{@link JBRSkia#COMMAND_FILL_OVAL}: {@code [op, 32, 0, argb, x, y, width, height]}</li>
+         *     <li>{@link JBRSkia#COMMAND_STROKE_OVAL}: {@code [op, 36, 0, argb, x, y, width, height, strokeWidth]}</li>
+         *     <li>{@link JBRSkia#COMMAND_CLEAR_RECT}: {@code [op, 28, 0, x, y, width, height]}</li>
+         *     <li>{@link JBRSkia#COMMAND_SAVE}: {@code [op, 12, 0]}</li>
+         *     <li>{@link JBRSkia#COMMAND_RESTORE}: {@code [op, 12, 0]}</li>
+         *     <li>{@link JBRSkia#COMMAND_CLIP_RECT}: {@code [op, 28, 0, x, y, width, height]}</li>
          * </ul>
          *
          * @param width user-space width of the component being painted.
