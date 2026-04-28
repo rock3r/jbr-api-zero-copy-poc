@@ -33,13 +33,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("1");
+    int ABI_ID = Integer.parseInt("2");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("1");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("2");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -70,6 +70,21 @@ public interface JBRSkia {
      * Command-list operation: clear a rectangle using destination clear blending.
      */
     int COMMAND_CLEAR_RECT = Integer.parseInt("6");
+
+    /**
+     * Command-list operation: save canvas state.
+     */
+    int COMMAND_SAVE = Integer.parseInt("7");
+
+    /**
+     * Command-list operation: restore canvas state.
+     */
+    int COMMAND_RESTORE = Integer.parseInt("8");
+
+    /**
+     * Command-list operation: intersect the current clip with a rectangle.
+     */
+    int COMMAND_CLIP_RECT = Integer.parseInt("9");
 
     /**
      * Attempts to acquire a Skia paint scope for the supplied Java2D graphics.
@@ -183,6 +198,9 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_FILL_OVAL}: {@code [op, argb, x, y, width, height]}</li>
          *     <li>{@link JBRSkia#COMMAND_STROKE_OVAL}: {@code [op, argb, x, y, width, height, strokeWidth]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLEAR_RECT}: {@code [op, x, y, width, height]}</li>
+         *     <li>{@link JBRSkia#COMMAND_SAVE}: {@code [op]}</li>
+         *     <li>{@link JBRSkia#COMMAND_RESTORE}: {@code [op]}</li>
+         *     <li>{@link JBRSkia#COMMAND_CLIP_RECT}: {@code [op, x, y, width, height]}</li>
          * </ul>
          *
          * @param width user-space width of the component being painted.
