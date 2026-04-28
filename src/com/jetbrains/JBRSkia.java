@@ -42,6 +42,21 @@ public interface JBRSkia {
     String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("1");
 
     /**
+     * Command-list operation: clear/fill the destination with one ARGB color.
+     */
+    int COMMAND_CLEAR = Integer.parseInt("1");
+
+    /**
+     * Command-list operation: fill a rectangle with one ARGB color.
+     */
+    int COMMAND_FILL_RECT = Integer.parseInt("2");
+
+    /**
+     * Command-list operation: stroke a line with one ARGB color.
+     */
+    int COMMAND_STROKE_LINE = Integer.parseInt("3");
+
+    /**
      * Attempts to acquire a Skia paint scope for the supplied Java2D graphics.
      *
      * <p>The returned scope is valid only for the current paint call and must be closed before returning
@@ -138,6 +153,27 @@ public interface JBRSkia {
          * @return {@code true} when the diagnostic frame was painted.
          */
         boolean renderDiagnosticFrame(int width, int height, long frameTimeNanos);
+
+        /**
+         * Renders a minimal JBR-owned Skia command list into this scope.
+         *
+         * <p>The command list is a PoC ABI used to prove that Skiko can supply drawing operations
+         * while JBR owns the Skia context, Metal queue, and destination texture. The flat integer
+         * encoding is intentionally temporary and will be replaced by the versioned native C ABI.</p>
+         *
+         * <ul>
+         *     <li>{@link JBRSkia#COMMAND_CLEAR}: {@code [op, argb]}</li>
+         *     <li>{@link JBRSkia#COMMAND_FILL_RECT}: {@code [op, argb, x, y, width, height, radius]}</li>
+         *     <li>{@link JBRSkia#COMMAND_STROKE_LINE}: {@code [op, argb, x1, y1, x2, y2, strokeWidth]}</li>
+         * </ul>
+         *
+         * @param width user-space width of the component being painted.
+         * @param height user-space height of the component being painted.
+         * @param frameTimeNanos frame timestamp supplied by the caller.
+         * @param commands flat integer command list.
+         * @return {@code true} when the command frame was painted.
+         */
+        boolean renderCommandFrame(int width, int height, long frameTimeNanos, int[] commands);
 
         /**
          * Flushes Skia work for this scope. Calling after {@link #close()} is invalid.
