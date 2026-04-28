@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("11");
+    int ABI_ID = Integer.parseInt("12");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("11");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("12");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -149,6 +149,11 @@ public interface JBRSkia {
     int COMMAND_CAP_CLIP_RECT_OP = Integer.parseInt("4096");
 
     /**
+     * Capability bit: command streams can save bounded layers with alpha.
+     */
+    int COMMAND_CAP_SAVE_LAYER = Integer.parseInt("8192");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -217,6 +222,11 @@ public interface JBRSkia {
      * Command-list operation: rotate the current canvas transform in degrees.
      */
     int COMMAND_ROTATE = Integer.parseInt("12");
+
+    /**
+     * Command-list operation: save a bounded layer with alpha.
+     */
+    int COMMAND_SAVE_LAYER = Integer.parseInt("13");
 
     /**
      * Returns the command stream capabilities supported by this runtime.
@@ -357,6 +367,7 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_TRANSLATE}: {@code [op, 20, 0, dx1000, dy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SCALE}: {@code [op, 20, 0, sx1000, sy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_ROTATE}: {@code [op, 16, 0, degrees1000]}</li>
+         *     <li>{@link JBRSkia#COMMAND_SAVE_LAYER}: {@code [op, 32, 0, x, y, width, height, alpha1000]}</li>
          * </ul>
          *
          * @param width user-space width of the component being painted.
