@@ -176,6 +176,22 @@ public interface JBRSkia {
         boolean renderCommandFrame(int width, int height, long frameTimeNanos, int[] commands);
 
         /**
+         * Replays a serialized Skia picture into this scope.
+         *
+         * <p>This PoC method lets Skiko record real rendering into an {@code SkPicture}, serialize it
+         * as data, and ask JBR-owned Skia to deserialize/replay it on JBR's Metal queue. The byte
+         * payload must only be used when {@link JBRSkia#BUILD_ID} confirms both sides agree on the
+         * Skia revision and ABI contract.</p>
+         *
+         * @param width user-space width of the component being painted.
+         * @param height user-space height of the component being painted.
+         * @param frameTimeNanos frame timestamp supplied by the caller.
+         * @param pictureData serialized Skia picture bytes.
+         * @return {@code true} when the picture frame was painted.
+         */
+        boolean renderPictureFrame(int width, int height, long frameTimeNanos, byte[] pictureData);
+
+        /**
          * Flushes Skia work for this scope. Calling after {@link #close()} is invalid.
          */
         void flush();
