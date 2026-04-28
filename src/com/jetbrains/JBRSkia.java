@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("16");
+    int ABI_ID = Integer.parseInt("17");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("16");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("17");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
