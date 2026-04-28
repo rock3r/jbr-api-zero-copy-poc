@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("15");
+    int ABI_ID = Integer.parseInt("16");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("15");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("16");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -169,6 +169,11 @@ public interface JBRSkia {
     int COMMAND_CAP_DRAW_TEXT_UTF16 = Integer.parseInt("65536");
 
     /**
+     * Capability bit: command streams can explicitly clear the JBR-side ARGB image cache.
+     */
+    int COMMAND_CAP_CLEAR_IMAGE_CACHE = Integer.parseInt("131072");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -262,6 +267,11 @@ public interface JBRSkia {
      * Command-list operation: draw a simple UTF-16 text run.
      */
     int COMMAND_DRAW_TEXT_UTF16 = Integer.parseInt("17");
+
+    /**
+     * Command-list operation: clear the JBR-side ARGB image cache.
+     */
+    int COMMAND_CLEAR_IMAGE_CACHE = Integer.parseInt("18");
 
     /**
      * Returns the command stream capabilities supported by this runtime.
@@ -415,6 +425,7 @@ public interface JBRSkia {
          *     alpha1000, filterQuality]}</li>
          *     <li>{@link JBRSkia#COMMAND_DRAW_TEXT_UTF16}: {@code [op, 32 + charCount * 4, flags,
          *     x1000, baseline1000, fontSize1000, argb, charCount, codeUnit0, ...]}</li>
+         *     <li>{@link JBRSkia#COMMAND_CLEAR_IMAGE_CACHE}: {@code [op, 12, 0]}</li>
          * </ul>
          *
          * @param width user-space width of the component being painted.
