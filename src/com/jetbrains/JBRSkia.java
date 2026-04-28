@@ -18,6 +18,7 @@ package com.jetbrains;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.nio.ByteBuffer;
 
 /**
  * Experimental service for rendering into a JBR-owned Skia surface during Java2D painting.
@@ -326,6 +327,22 @@ public interface JBRSkia {
          * @return {@code true} when the command frame was painted.
          */
         boolean renderCommandBufferFrame(int width, int height, long frameTimeNanos, byte[] commands);
+
+        /**
+         * Renders a command stream carried by a direct byte buffer.
+         *
+         * <p>The buffer uses little-endian 32-bit words with the same stream and record layout
+         * documented by {@link #renderCommandFrame(int, int, long, int[])}. Direct buffers are the
+         * preferred PoC carrier because JBR native code can read the memory block without pinning a
+         * Java byte array.</p>
+         *
+         * @param width user-space width of the component being painted.
+         * @param height user-space height of the component being painted.
+         * @param frameTimeNanos frame timestamp supplied by the caller.
+         * @param commands direct little-endian encoded command stream.
+         * @return {@code true} when the command frame was painted.
+         */
+        boolean renderCommandDirectFrame(int width, int height, long frameTimeNanos, ByteBuffer commands);
 
         /**
          * Replays a serialized Skia picture into this scope.
