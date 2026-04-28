@@ -33,13 +33,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("3");
+    int ABI_ID = Integer.parseInt("4");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("3");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("4");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -55,6 +55,51 @@ public interface JBRSkia {
      * Command-stream flags value for the current unextended payload format.
      */
     int COMMAND_STREAM_FLAGS_NONE = Integer.parseInt("0");
+
+    /**
+     * Capability bit: command streams may clear/fill the current destination.
+     */
+    int COMMAND_CAP_CLEAR = Integer.parseInt("1");
+
+    /**
+     * Capability bit: command streams may fill rectangles.
+     */
+    int COMMAND_CAP_FILL_RECT = Integer.parseInt("2");
+
+    /**
+     * Capability bit: command streams may stroke lines.
+     */
+    int COMMAND_CAP_STROKE_LINE = Integer.parseInt("4");
+
+    /**
+     * Capability bit: command streams may fill ovals.
+     */
+    int COMMAND_CAP_FILL_OVAL = Integer.parseInt("8");
+
+    /**
+     * Capability bit: command streams may stroke ovals.
+     */
+    int COMMAND_CAP_STROKE_OVAL = Integer.parseInt("16");
+
+    /**
+     * Capability bit: command streams may clear rectangles.
+     */
+    int COMMAND_CAP_CLEAR_RECT = Integer.parseInt("32");
+
+    /**
+     * Capability bit: command streams may save and restore drawing state.
+     */
+    int COMMAND_CAP_SAVE_RESTORE = Integer.parseInt("64");
+
+    /**
+     * Capability bit: command streams may intersect the current clip with a rectangle.
+     */
+    int COMMAND_CAP_CLIP_RECT = Integer.parseInt("128");
+
+    /**
+     * Capability bit: command coordinates are expressed in Swing user-space pixels.
+     */
+    int COMMAND_CAP_USER_SPACE_COORDINATES = Integer.parseInt("256");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -100,6 +145,16 @@ public interface JBRSkia {
      * Command-list operation: intersect the current clip with a rectangle.
      */
     int COMMAND_CLIP_RECT = Integer.parseInt("9");
+
+    /**
+     * Returns the command stream capabilities supported by this runtime.
+     *
+     * <p>Clients must treat missing required capability bits as an interop-unavailable condition
+     * and fall back to their old rendering path.</p>
+     *
+     * @return bitset composed from {@code COMMAND_CAP_*} constants.
+     */
+    int getCommandCapabilities();
 
     /**
      * Attempts to acquire a Skia paint scope for the supplied Java2D graphics.
