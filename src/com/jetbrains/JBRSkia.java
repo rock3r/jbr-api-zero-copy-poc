@@ -57,6 +57,16 @@ public interface JBRSkia {
     int COMMAND_STROKE_LINE = Integer.parseInt("3");
 
     /**
+     * Command-list operation: fill an oval with one ARGB color.
+     */
+    int COMMAND_FILL_OVAL = Integer.parseInt("4");
+
+    /**
+     * Command-list operation: stroke an oval with one ARGB color.
+     */
+    int COMMAND_STROKE_OVAL = Integer.parseInt("5");
+
+    /**
      * Attempts to acquire a Skia paint scope for the supplied Java2D graphics.
      *
      * <p>The returned scope is valid only for the current paint call and must be closed before returning
@@ -165,6 +175,8 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_CLEAR}: {@code [op, argb]}</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT}: {@code [op, argb, x, y, width, height, radius]}</li>
          *     <li>{@link JBRSkia#COMMAND_STROKE_LINE}: {@code [op, argb, x1, y1, x2, y2, strokeWidth]}</li>
+         *     <li>{@link JBRSkia#COMMAND_FILL_OVAL}: {@code [op, argb, x, y, width, height]}</li>
+         *     <li>{@link JBRSkia#COMMAND_STROKE_OVAL}: {@code [op, argb, x, y, width, height, strokeWidth]}</li>
          * </ul>
          *
          * @param width user-space width of the component being painted.
