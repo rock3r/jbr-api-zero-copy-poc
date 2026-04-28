@@ -33,13 +33,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("6");
+    int ABI_ID = Integer.parseInt("7");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("6");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("7");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -49,12 +49,22 @@ public interface JBRSkia {
     /**
      * Number of integers in the command-stream header.
      */
-    int COMMAND_STREAM_HEADER_SIZE = Integer.parseInt("4");
+    int COMMAND_STREAM_HEADER_SIZE = Integer.parseInt("6");
 
     /**
      * Command-stream flags value for the current unextended payload format.
      */
     int COMMAND_STREAM_FLAGS_NONE = Integer.parseInt("0");
+
+    /**
+     * Command coordinates are Swing user-space pixels.
+     */
+    int COMMAND_COORDINATE_SPACE_SWING_USER = Integer.parseInt("1");
+
+    /**
+     * Paint payloads are solid non-premultiplied ARGB integers.
+     */
+    int COMMAND_PAINT_FORMAT_SOLID_ARGB = Integer.parseInt("1");
 
     /**
      * Number of bytes in every command-record header:
@@ -272,8 +282,9 @@ public interface JBRSkia {
          * while JBR owns the Skia context, Metal queue, and destination texture. The integer encoding
          * is intentionally temporary and will be replaced by the versioned native C ABI.</p>
          *
-         * <p>The stream starts with a four-integer header:
-         * {@code [COMMAND_STREAM_MAGIC, ABI_ID, COMMAND_STREAM_FLAGS_NONE, payloadLength]}.
+         * <p>The stream starts with a six-integer header:
+         * {@code [COMMAND_STREAM_MAGIC, ABI_ID, COMMAND_STREAM_FLAGS_NONE, payloadLength,
+         * COMMAND_COORDINATE_SPACE_SWING_USER, COMMAND_PAINT_FORMAT_SOLID_ARGB]}.
          * {@code payloadLength} is the number of integers after the header.</p>
          *
          * <p>Every command record starts with {@code [op, recordByteLength, recordFlags]}, where
