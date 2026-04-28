@@ -33,13 +33,28 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("2");
+    int ABI_ID = Integer.parseInt("3");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("2");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("3");
+
+    /**
+     * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
+     */
+    int COMMAND_STREAM_MAGIC = Integer.parseInt("1246972723");
+
+    /**
+     * Number of integers in the command-stream header.
+     */
+    int COMMAND_STREAM_HEADER_SIZE = Integer.parseInt("4");
+
+    /**
+     * Command-stream flags value for the current unextended payload format.
+     */
+    int COMMAND_STREAM_FLAGS_NONE = Integer.parseInt("0");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -185,11 +200,15 @@ public interface JBRSkia {
         boolean renderDiagnosticFrame(int width, int height, long frameTimeNanos);
 
         /**
-         * Renders a minimal JBR-owned Skia command list into this scope.
+         * Renders a minimal JBR-owned Skia command stream into this scope.
          *
-         * <p>The command list is a PoC ABI used to prove that Skiko can supply drawing operations
-         * while JBR owns the Skia context, Metal queue, and destination texture. The flat integer
-         * encoding is intentionally temporary and will be replaced by the versioned native C ABI.</p>
+         * <p>The command stream is a PoC ABI used to prove that Skiko can supply drawing operations
+         * while JBR owns the Skia context, Metal queue, and destination texture. The integer encoding
+         * is intentionally temporary and will be replaced by the versioned native C ABI.</p>
+         *
+         * <p>The stream starts with a four-integer header:
+         * {@code [COMMAND_STREAM_MAGIC, ABI_ID, COMMAND_STREAM_FLAGS_NONE, payloadLength]}.
+         * {@code payloadLength} is the number of integers after the header.</p>
          *
          * <ul>
          *     <li>{@link JBRSkia#COMMAND_CLEAR}: {@code [op, argb]}</li>
@@ -206,7 +225,7 @@ public interface JBRSkia {
          * @param width user-space width of the component being painted.
          * @param height user-space height of the component being painted.
          * @param frameTimeNanos frame timestamp supplied by the caller.
-         * @param commands flat integer command list.
+         * @param commands framed integer command stream.
          * @return {@code true} when the command frame was painted.
          */
         boolean renderCommandFrame(int width, int height, long frameTimeNanos, int[] commands);
