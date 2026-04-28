@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("10");
+    int ABI_ID = Integer.parseInt("11");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("10");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("11");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -144,6 +144,11 @@ public interface JBRSkia {
     int COMMAND_CAP_BASIC_TRANSFORMS = Integer.parseInt("2048");
 
     /**
+     * Capability bit: clip-rectangle records carry an explicit intersect/difference operation.
+     */
+    int COMMAND_CAP_CLIP_RECT_OP = Integer.parseInt("4096");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -187,6 +192,16 @@ public interface JBRSkia {
      * Command-list operation: intersect the current clip with a rectangle.
      */
     int COMMAND_CLIP_RECT = Integer.parseInt("9");
+
+    /**
+     * Clip operation payload value: intersect the current clip with the rectangle.
+     */
+    int COMMAND_CLIP_OP_INTERSECT = Integer.parseInt("0");
+
+    /**
+     * Clip operation payload value: subtract the rectangle from the current clip.
+     */
+    int COMMAND_CLIP_OP_DIFFERENCE = Integer.parseInt("1");
 
     /**
      * Command-list operation: translate the current canvas transform.
@@ -338,7 +353,7 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_CLEAR_RECT}: {@code [op, 28, 0, x, y, width, height]}</li>
          *     <li>{@link JBRSkia#COMMAND_SAVE}: {@code [op, 12, 0]}</li>
          *     <li>{@link JBRSkia#COMMAND_RESTORE}: {@code [op, 12, 0]}</li>
-         *     <li>{@link JBRSkia#COMMAND_CLIP_RECT}: {@code [op, 28, 0, x, y, width, height]}</li>
+         *     <li>{@link JBRSkia#COMMAND_CLIP_RECT}: {@code [op, 32, flags, x, y, width, height, clipOp]}</li>
          *     <li>{@link JBRSkia#COMMAND_TRANSLATE}: {@code [op, 20, 0, dx1000, dy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SCALE}: {@code [op, 20, 0, sx1000, sy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_ROTATE}: {@code [op, 16, 0, degrees1000]}</li>
