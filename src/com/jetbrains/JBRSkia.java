@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("13");
+    int ABI_ID = Integer.parseInt("14");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("13");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("14");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -159,6 +159,11 @@ public interface JBRSkia {
     int COMMAND_CAP_DRAW_IMAGE_ARGB = Integer.parseInt("16384");
 
     /**
+     * Capability bit: command streams can define ARGB images once and draw later frames by cache key.
+     */
+    int COMMAND_CAP_IMAGE_CACHE = Integer.parseInt("32768");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -237,6 +242,16 @@ public interface JBRSkia {
      * Command-list operation: draw an inline ARGB raster image.
      */
     int COMMAND_DRAW_IMAGE_ARGB = Integer.parseInt("14");
+
+    /**
+     * Command-list operation: define an ARGB raster image in the JBR-side image cache.
+     */
+    int COMMAND_DEFINE_IMAGE_ARGB = Integer.parseInt("15");
+
+    /**
+     * Command-list operation: draw an image previously defined in the JBR-side image cache.
+     */
+    int COMMAND_DRAW_IMAGE_REF = Integer.parseInt("16");
 
     /**
      * Returns the command stream capabilities supported by this runtime.
@@ -382,6 +397,12 @@ public interface JBRSkia {
          *     srcLeft1000, srcTop1000, srcRight1000, srcBottom1000, dstLeft1000, dstTop1000,
          *     dstRight1000, dstBottom1000, imageWidth, imageHeight, alpha1000, filterQuality,
          *     pixelCount, argb0, ...]}</li>
+         *     <li>{@link JBRSkia#COMMAND_DEFINE_IMAGE_ARGB}: {@code [op, 32 + pixelCount * 4, 0,
+         *     cacheKeyHigh, cacheKeyLow, imageWidth, imageHeight, pixelCount, argb0, ...]}</li>
+         *     <li>{@link JBRSkia#COMMAND_DRAW_IMAGE_REF}: {@code [op, 68, flags,
+         *     srcLeft1000, srcTop1000, srcRight1000, srcBottom1000, dstLeft1000, dstTop1000,
+         *     dstRight1000, dstBottom1000, cacheKeyHigh, cacheKeyLow, imageWidth, imageHeight,
+         *     alpha1000, filterQuality]}</li>
          * </ul>
          *
          * @param width user-space width of the component being painted.
