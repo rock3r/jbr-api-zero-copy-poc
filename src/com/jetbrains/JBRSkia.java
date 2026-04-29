@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("40");
+    int ABI_ID = Integer.parseInt("41");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
      * identity or lifecycle contract changes independently of the command stream ABI.
      */
-    int NATIVE_ABI_VERSION = Integer.parseInt("2");
+    int NATIVE_ABI_VERSION = Integer.parseInt("3");
 
     /**
      * Pinned Skia revision used by this PoC bridge.
@@ -595,6 +595,18 @@ public interface JBRSkia {
          * @return opaque destination surface id.
          */
         long getSurfaceId();
+
+        /**
+         * Returns an opaque destination context identity that is stable while the underlying
+         * Java2D/Metal context remains valid.
+         *
+         * <p>Clients may compare this value separately from {@link #getSurfaceId()} to distinguish
+         * a same-context surface replacement, such as resize, from a context/device migration.
+         * {@code 0} means no stable native context identity is available.</p>
+         *
+         * @return opaque destination context id.
+         */
+        long getContextId();
 
         /**
          * Returns the rendering backend.
