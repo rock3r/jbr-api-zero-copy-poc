@@ -43,6 +43,12 @@ public interface JBRSkia {
     String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("39");
 
     /**
+     * Java-visible version of the native interop metadata block. Bump when the native service
+     * identity or lifecycle contract changes independently of the command stream ABI.
+     */
+    int NATIVE_ABI_VERSION = Integer.parseInt("1");
+
+    /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
      */
     int COMMAND_STREAM_MAGIC = Integer.parseInt("1246972723");
@@ -515,6 +521,27 @@ public interface JBRSkia {
      * @return bitset composed from {@code COMMAND_CAP64_*} and widened {@code COMMAND_CAP_*} constants.
      */
     long getCommandCapabilities64();
+
+    /**
+     * Runtime native metadata block version. This must match {@link #NATIVE_ABI_VERSION}.
+     *
+     * @return the native metadata block version exposed by the acquired service
+     */
+    int getNativeAbiVersion();
+
+    /**
+     * Runtime command stream ABI id. This mirrors {@link #ABI_ID} but is served from the acquired service.
+     *
+     * @return the command stream ABI id exposed by the acquired service
+     */
+    int getNativeCommandStreamAbiId();
+
+    /**
+     * Runtime build id. This mirrors {@link #BUILD_ID} but is served from the acquired service.
+     *
+     * @return the build id exposed by the acquired service
+     */
+    String getNativeBuildId();
 
     /**
      * Attempts to acquire a Skia paint scope for the supplied Java2D graphics.
