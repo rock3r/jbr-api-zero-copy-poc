@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("41");
+    int ABI_ID = Integer.parseInt("42");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -303,6 +303,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_FILL_PATH_SWEEP_GRADIENT = Long.parseLong("274877906944");
 
     /**
+     * Capability bit: command streams may evict one cached image key from the current destination context.
+     */
+    long COMMAND_CAP64_EVICT_IMAGE_CACHE_KEY = Long.parseLong("549755813888");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -471,6 +476,11 @@ public interface JBRSkia {
      * Command-list operation: fill a path with serialized sweep-gradient paint.
      */
     int COMMAND_FILL_PATH_SWEEP_GRADIENT = Integer.parseInt("32");
+
+    /**
+     * Evicts one cached image key from the current destination context.
+     */
+    int COMMAND_EVICT_IMAGE_CACHE_KEY = Integer.parseInt("33");
 
     /**
      * Paint-style payload value: fill.
@@ -770,6 +780,8 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_DRAW_TEXT_UTF16}: {@code [op, 32 + charCount * 4, flags,
          *     x1000, baseline1000, fontSize1000, argb, charCount, codeUnit0, ...]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLEAR_IMAGE_CACHE}: {@code [op, 12, 0]}</li>
+         *     <li>{@link JBRSkia#COMMAND_EVICT_IMAGE_CACHE_KEY}: {@code [op, 20, 0,
+         *     cacheKeyHigh, cacheKeyLow]}</li>
          *     <li>{@link JBRSkia#COMMAND_DRAW_PARAGRAPH_UTF16}: {@code [op, 84 + charCount * 4, flags,
          *     x1000, y1000, width1000, fontSize1000, argb, fontWeight, fontWidth, fontSlant,
          *     textAlign, textDirection, lineHeightMultiplier1000, maxLines, ellipsisMode,
