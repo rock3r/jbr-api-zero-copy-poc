@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("29");
+    int ABI_ID = Integer.parseInt("30");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("29");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("30");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -234,6 +234,11 @@ public interface JBRSkia {
     int COMMAND_CAP_DRAW_ROUND_RECT = Integer.parseInt("536870912");
 
     /**
+     * Capability bit: command streams can fill rectangles with serialized linear-gradient paint.
+     */
+    int COMMAND_CAP_FILL_RECT_LINEAR_GRADIENT = Integer.parseInt("1073741824");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -357,6 +362,11 @@ public interface JBRSkia {
      * Command-list operation: draw a solid-color rounded rectangle.
      */
     int COMMAND_DRAW_ROUND_RECT = Integer.parseInt("23");
+
+    /**
+     * Command-list operation: fill a rectangle with serialized linear-gradient paint.
+     */
+    int COMMAND_FILL_RECT_LINEAR_GRADIENT = Integer.parseInt("24");
 
     /**
      * Paint-style payload value: fill.
@@ -551,6 +561,9 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_DRAW_ROUND_RECT}: {@code [op, 60, flags, paintStyle, argb,
          *     left1000, top1000, right1000, bottom1000, radiusX1000, radiusY1000,
          *     strokeWidth, strokeCap, strokeJoin, strokeMiter1000]}, where stroke fields are ignored for fill style.</li>
+         *     <li>{@link JBRSkia#COMMAND_FILL_RECT_LINEAR_GRADIENT}: {@code [op, 52 + colorCount * 8, flags,
+         *     left1000, top1000, right1000, bottom1000, fromX1000, fromY1000, toX1000, toY1000,
+         *     tileMode, colorCount, argb0, stop1000_0, ...]}, with 2..16 colors and stops in [0, 1000].</li>
          *     <li>{@link JBRSkia#COMMAND_TRANSLATE}: {@code [op, 20, 0, dx1000, dy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SCALE}: {@code [op, 20, 0, sx1000, sy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_ROTATE}: {@code [op, 16, 0, degrees1000]}</li>
