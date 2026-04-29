@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("32");
+    int ABI_ID = Integer.parseInt("33");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("32");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("33");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -249,6 +249,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_FILL_ROUND_RECT_LINEAR_GRADIENT = Long.parseLong("2147483648");
 
     /**
+     * 64-bit command capability bit: command streams can fill rectangles with serialized radial-gradient paint.
+     */
+    long COMMAND_CAP64_FILL_RECT_RADIAL_GRADIENT = Long.parseLong("4294967296");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -382,6 +387,11 @@ public interface JBRSkia {
      * Command-list operation: fill a rounded rectangle with serialized linear-gradient paint.
      */
     int COMMAND_FILL_ROUND_RECT_LINEAR_GRADIENT = Integer.parseInt("25");
+
+    /**
+     * Command-list operation: fill a rectangle with serialized radial-gradient paint.
+     */
+    int COMMAND_FILL_RECT_RADIAL_GRADIENT = Integer.parseInt("26");
 
     /**
      * Paint-style payload value: fill.
@@ -591,6 +601,9 @@ public interface JBRSkia {
          *     left1000, top1000, right1000, bottom1000, radiusX1000, radiusY1000,
          *     fromX1000, fromY1000, toX1000, toY1000, tileMode, colorCount, argb0, stop1000_0, ...]},
          *     with 2..16 colors and stops in [0, 1000].</li>
+         *     <li>{@link JBRSkia#COMMAND_FILL_RECT_RADIAL_GRADIENT}: {@code [op, 48 + colorCount * 8, flags,
+         *     left1000, top1000, right1000, bottom1000, centerX1000, centerY1000, radius1000,
+         *     tileMode, colorCount, argb0, stop1000_0, ...]}, with 2..16 colors and stops in [0, 1000].</li>
          *     <li>{@link JBRSkia#COMMAND_TRANSLATE}: {@code [op, 20, 0, dx1000, dy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SCALE}: {@code [op, 20, 0, sx1000, sy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_ROTATE}: {@code [op, 16, 0, degrees1000]}</li>
