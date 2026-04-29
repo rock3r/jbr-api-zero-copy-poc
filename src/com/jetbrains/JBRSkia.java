@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("35");
+    int ABI_ID = Integer.parseInt("36");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("35");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("36");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -264,6 +264,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_FILL_PATH_LINEAR_GRADIENT = Long.parseLong("17179869184");
 
     /**
+     * 64-bit command capability bit: command streams can fill paths with serialized radial-gradient paint.
+     */
+    long COMMAND_CAP64_FILL_PATH_RADIAL_GRADIENT = Long.parseLong("34359738368");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -412,6 +417,11 @@ public interface JBRSkia {
      * Command-list operation: fill a path with serialized linear-gradient paint.
      */
     int COMMAND_FILL_PATH_LINEAR_GRADIENT = Integer.parseInt("28");
+
+    /**
+     * Command-list operation: fill a path with serialized radial-gradient paint.
+     */
+    int COMMAND_FILL_PATH_RADIAL_GRADIENT = Integer.parseInt("29");
 
     /**
      * Paint-style payload value: fill.
@@ -633,6 +643,11 @@ public interface JBRSkia {
          *     toX1000, toY1000, tileMode, colorCount, argb0, stop1000_0, ...]}, where path data is a
          *     sequence of {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000,
          *     with 2..16 colors and stops in [0, 1000].</li>
+         *     <li>{@link JBRSkia#COMMAND_FILL_PATH_RADIAL_GRADIENT}: {@code [op, 40 + pathDataLength * 4
+         *     + colorCount * 8, flags, fillType, pathDataLength, pathVerb0, ..., centerX1000, centerY1000,
+         *     radius1000, tileMode, colorCount, argb0, stop1000_0, ...]}, where path data is a sequence of
+         *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000, with 2..16
+         *     colors and stops in [0, 1000].</li>
          *     <li>{@link JBRSkia#COMMAND_TRANSLATE}: {@code [op, 20, 0, dx1000, dy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SCALE}: {@code [op, 20, 0, sx1000, sy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_ROTATE}: {@code [op, 16, 0, degrees1000]}</li>
