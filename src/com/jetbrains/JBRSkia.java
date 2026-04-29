@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("25");
+    int ABI_ID = Integer.parseInt("26");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("25");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("26");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -214,6 +214,11 @@ public interface JBRSkia {
     int COMMAND_CAP_PARAGRAPH_BACKGROUND = Integer.parseInt("33554432");
 
     /**
+     * Capability bit: command streams can clip with serialized path verbs.
+     */
+    int COMMAND_CAP_CLIP_PATH = Integer.parseInt("67108864");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -317,6 +322,46 @@ public interface JBRSkia {
      * Command-list operation: draw one JBR-owned shaped UTF-16 paragraph.
      */
     int COMMAND_DRAW_PARAGRAPH_UTF16 = Integer.parseInt("19");
+
+    /**
+     * Command-list operation: clip with serialized path verbs.
+     */
+    int COMMAND_CLIP_PATH = Integer.parseInt("20");
+
+    /**
+     * Path fill-type payload value: non-zero winding.
+     */
+    int COMMAND_PATH_FILL_NON_ZERO = Integer.parseInt("0");
+
+    /**
+     * Path fill-type payload value: even-odd.
+     */
+    int COMMAND_PATH_FILL_EVEN_ODD = Integer.parseInt("1");
+
+    /**
+     * Path verb payload value: move to one point.
+     */
+    int COMMAND_PATH_VERB_MOVE = Integer.parseInt("0");
+
+    /**
+     * Path verb payload value: line to one point.
+     */
+    int COMMAND_PATH_VERB_LINE = Integer.parseInt("1");
+
+    /**
+     * Path verb payload value: quadratic curve with one control point and one end point.
+     */
+    int COMMAND_PATH_VERB_QUAD = Integer.parseInt("2");
+
+    /**
+     * Path verb payload value: cubic curve with two control points and one end point.
+     */
+    int COMMAND_PATH_VERB_CUBIC = Integer.parseInt("3");
+
+    /**
+     * Path verb payload value: close the current contour.
+     */
+    int COMMAND_PATH_VERB_CLOSE = Integer.parseInt("4");
 
     /**
      * Returns the command stream capabilities supported by this runtime.
@@ -454,6 +499,9 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_SAVE}: {@code [op, 12, 0]}</li>
          *     <li>{@link JBRSkia#COMMAND_RESTORE}: {@code [op, 12, 0]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLIP_RECT}: {@code [op, 32, flags, x, y, width, height, clipOp]}</li>
+         *     <li>{@link JBRSkia#COMMAND_CLIP_PATH}: {@code [op, 24 + pathDataLength * 4, flags,
+         *     clipOp, fillType, pathDataLength, pathVerb0, ...]}, where path data is a sequence of
+         *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000.</li>
          *     <li>{@link JBRSkia#COMMAND_TRANSLATE}: {@code [op, 20, 0, dx1000, dy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SCALE}: {@code [op, 20, 0, sx1000, sy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_ROTATE}: {@code [op, 16, 0, degrees1000]}</li>
