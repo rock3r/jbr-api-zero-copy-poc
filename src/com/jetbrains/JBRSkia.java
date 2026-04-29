@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("23");
+    int ABI_ID = Integer.parseInt("24");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("23");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("24");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -202,6 +202,11 @@ public interface JBRSkia {
      * Capability bit: paragraph text commands include Compose text decoration metadata.
      */
     int COMMAND_CAP_PARAGRAPH_DECORATION = Integer.parseInt("8388608");
+
+    /**
+     * Capability bit: paragraph text commands include letter-spacing metadata.
+     */
+    int COMMAND_CAP_PARAGRAPH_LETTER_SPACING = Integer.parseInt("16777216");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -461,10 +466,10 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_DRAW_TEXT_UTF16}: {@code [op, 32 + charCount * 4, flags,
          *     x1000, baseline1000, fontSize1000, argb, charCount, codeUnit0, ...]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLEAR_IMAGE_CACHE}: {@code [op, 12, 0]}</li>
-         *     <li>{@link JBRSkia#COMMAND_DRAW_PARAGRAPH_UTF16}: {@code [op, 72 + charCount * 4, flags,
+         *     <li>{@link JBRSkia#COMMAND_DRAW_PARAGRAPH_UTF16}: {@code [op, 76 + charCount * 4, flags,
          *     x1000, y1000, width1000, fontSize1000, argb, fontWeight, fontWidth, fontSlant,
          *     textAlign, textDirection, lineHeightMultiplier1000, maxLines, ellipsisMode,
-         *     decorationMask, charCount, codeUnit0, ...]}</li>
+         *     decorationMask, letterSpacing1000, charCount, codeUnit0, ...]}</li>
          * </ul>
          *
          * @param width user-space width of the component being painted.
