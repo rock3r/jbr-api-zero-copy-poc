@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("19");
+    int ABI_ID = Integer.parseInt("20");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("19");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("20");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -182,6 +182,11 @@ public interface JBRSkia {
      * Capability bit: paragraph text commands include Skia font style metadata.
      */
     int COMMAND_CAP_PARAGRAPH_FONT_STYLE = Integer.parseInt("524288");
+
+    /**
+     * Capability bit: paragraph text commands include alignment and direction metadata.
+     */
+    int COMMAND_CAP_PARAGRAPH_LAYOUT = Integer.parseInt("1048576");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -441,9 +446,9 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_DRAW_TEXT_UTF16}: {@code [op, 32 + charCount * 4, flags,
          *     x1000, baseline1000, fontSize1000, argb, charCount, codeUnit0, ...]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLEAR_IMAGE_CACHE}: {@code [op, 12, 0]}</li>
-         *     <li>{@link JBRSkia#COMMAND_DRAW_PARAGRAPH_UTF16}: {@code [op, 48 + charCount * 4, flags,
+         *     <li>{@link JBRSkia#COMMAND_DRAW_PARAGRAPH_UTF16}: {@code [op, 56 + charCount * 4, flags,
          *     x1000, y1000, width1000, fontSize1000, argb, fontWeight, fontWidth, fontSlant,
-         *     charCount, codeUnit0, ...]}</li>
+         *     textAlign, textDirection, charCount, codeUnit0, ...]}</li>
          * </ul>
          *
          * @param width user-space width of the component being painted.
