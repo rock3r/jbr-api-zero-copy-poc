@@ -37,16 +37,29 @@ public interface JBRSkia {
     int ABI_ID = Integer.parseInt("39");
 
     /**
-     * Exact runtime build identity. This field intentionally uses a non-constant initializer so
-     * compile-only clients cannot accidentally inline stale values.
-     */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("39");
-
-    /**
      * Java-visible version of the native interop metadata block. Bump when the native service
      * identity or lifecycle contract changes independently of the command stream ABI.
      */
     int NATIVE_ABI_VERSION = Integer.parseInt("1");
+
+    /**
+     * Pinned Skia revision used by this PoC bridge.
+     */
+    String SKIA_REVISION = "m147-" + "64a2414108";
+
+    /**
+     * Fingerprint of the Skia build configuration expected by this PoC bridge.
+     */
+    String SKIA_FLAGS_HASH = "macos-release-metal-poc:" + Integer.parseInt("1");
+
+    /**
+     * Exact runtime build identity. This field intentionally uses a non-constant initializer so
+     * compile-only clients cannot accidentally inline stale values.
+     */
+    String BUILD_ID = "skia=" + SKIA_REVISION +
+            ";flags=" + SKIA_FLAGS_HASH +
+            ";abi=" + ABI_ID +
+            ";native=" + NATIVE_ABI_VERSION;
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
