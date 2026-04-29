@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("39");
+    int ABI_ID = Integer.parseInt("40");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
      * identity or lifecycle contract changes independently of the command stream ABI.
      */
-    int NATIVE_ABI_VERSION = Integer.parseInt("1");
+    int NATIVE_ABI_VERSION = Integer.parseInt("2");
 
     /**
      * Pinned Skia revision used by this PoC bridge.
@@ -583,6 +583,18 @@ public interface JBRSkia {
          * @return opaque scope id.
          */
         long getScopeId();
+
+        /**
+         * Returns an opaque destination surface identity that is stable for cached state while the
+         * underlying Java2D/Metal destination remains valid.
+         *
+         * <p>Clients may compare this value between paint scopes to discard cached state after
+         * resize, surface loss, or screen migration. {@code 0} means no stable native destination
+         * identity is available.</p>
+         *
+         * @return opaque destination surface id.
+         */
+        long getSurfaceId();
 
         /**
          * Returns the rendering backend.
