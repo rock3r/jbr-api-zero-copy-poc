@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("17");
+    int ABI_ID = Integer.parseInt("18");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("17");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("18");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -174,6 +174,11 @@ public interface JBRSkia {
     int COMMAND_CAP_CLEAR_IMAGE_CACHE = Integer.parseInt("131072");
 
     /**
+     * Capability bit: command streams can draw JBR-owned shaped UTF-16 paragraphs.
+     */
+    int COMMAND_CAP_DRAW_PARAGRAPH_UTF16 = Integer.parseInt("262144");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -272,6 +277,11 @@ public interface JBRSkia {
      * Command-list operation: clear the JBR-side ARGB image cache.
      */
     int COMMAND_CLEAR_IMAGE_CACHE = Integer.parseInt("18");
+
+    /**
+     * Command-list operation: draw one JBR-owned shaped UTF-16 paragraph.
+     */
+    int COMMAND_DRAW_PARAGRAPH_UTF16 = Integer.parseInt("19");
 
     /**
      * Returns the command stream capabilities supported by this runtime.
@@ -426,6 +436,8 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_DRAW_TEXT_UTF16}: {@code [op, 32 + charCount * 4, flags,
          *     x1000, baseline1000, fontSize1000, argb, charCount, codeUnit0, ...]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLEAR_IMAGE_CACHE}: {@code [op, 12, 0]}</li>
+         *     <li>{@link JBRSkia#COMMAND_DRAW_PARAGRAPH_UTF16}: {@code [op, 36 + charCount * 4, flags,
+         *     x1000, y1000, width1000, fontSize1000, argb, charCount, codeUnit0, ...]}</li>
          * </ul>
          *
          * @param width user-space width of the component being painted.
