@@ -34,13 +34,13 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("30");
+    int ABI_ID = Integer.parseInt("31");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("30");
+    String BUILD_ID = "skia-interop-poc:" + Integer.parseInt("31");
 
     /**
      * Command-stream magic value ({@code JSK3}) that identifies framed command payloads.
@@ -239,6 +239,11 @@ public interface JBRSkia {
     int COMMAND_CAP_FILL_RECT_LINEAR_GRADIENT = Integer.parseInt("1073741824");
 
     /**
+     * 64-bit command capability bit: command streams can fill rectangles with serialized linear-gradient paint.
+     */
+    long COMMAND_CAP64_FILL_RECT_LINEAR_GRADIENT = Long.parseLong("1073741824");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -422,6 +427,14 @@ public interface JBRSkia {
      * @return bitset composed from {@code COMMAND_CAP_*} constants.
      */
     int getCommandCapabilities();
+
+    /**
+     * Returns the 64-bit command capability mask. Clients for ABI 31 and newer must use this value
+     * for compatibility checks so future commands can use bits beyond the signed {@code int} range.
+     *
+     * @return bitset composed from {@code COMMAND_CAP64_*} and widened {@code COMMAND_CAP_*} constants.
+     */
+    long getCommandCapabilities64();
 
     /**
      * Attempts to acquire a Skia paint scope for the supplied Java2D graphics.
