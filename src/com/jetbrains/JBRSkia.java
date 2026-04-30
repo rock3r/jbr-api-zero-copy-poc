@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("80");
+    int ABI_ID = Integer.parseInt("81");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -876,6 +876,17 @@ public interface JBRSkia {
      * @return bitset composed from {@code COMMAND_CAP64_*} and widened {@code COMMAND_CAP_*} constants.
      */
     long getCommandCapabilities64();
+
+    /**
+     * Returns the second 64-bit command capability mask. ABI 81 introduces this extension word so
+     * command negotiation can continue after the low 64-bit mask became full in ABI 80.
+     *
+     * <p>Clients must require any future {@code COMMAND_CAP64_HIGH_*} bits through this value and
+     * fall back when required high-word bits are absent.</p>
+     *
+     * @return high bitset composed from future {@code COMMAND_CAP64_HIGH_*} constants.
+     */
+    long getCommandCapabilities64High();
 
     /**
      * Runtime native metadata block version. This must match {@link #NATIVE_ABI_VERSION}.
