@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("57");
+    int ABI_ID = Integer.parseInt("58");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -388,6 +388,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_EVICT_COLOR_FILTER_HANDLE = Long.parseLong("36028797018963968");
 
     /**
+     * 64-bit command capability bit: command streams can define reusable effect descriptors.
+     */
+    long COMMAND_CAP64_DEFINE_EFFECT_DESCRIPTOR = Long.parseLong("72057594037927936");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -636,6 +641,21 @@ public interface JBRSkia {
      * Command-list operation: evict a reusable color-filter descriptor from the current destination context.
      */
     int COMMAND_EVICT_COLOR_FILTER_HANDLE = Integer.parseInt("48");
+
+    /**
+     * Command-list operation: define a reusable effect descriptor in the current destination context.
+     */
+    int COMMAND_DEFINE_EFFECT_DESCRIPTOR = Integer.parseInt("49");
+
+    /**
+     * Effect descriptor type: tint color filter.
+     */
+    int COMMAND_EFFECT_DESCRIPTOR_TINT_COLOR_FILTER = Integer.parseInt("1");
+
+    /**
+     * Effect descriptor schema version 1.
+     */
+    int COMMAND_EFFECT_DESCRIPTOR_VERSION_1 = Integer.parseInt("1");
 
     /**
      * Blend-mode payload value: plus/additive blending.
@@ -990,8 +1010,16 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_DEFINE_COLOR_FILTER_TINT}: {@code [op, 28, 0,
          *     handleHigh, handleLow, colorFilterArgb, colorFilterBlendMode]}, with
          *     {@code colorFilterBlendMode} currently limited to
-         *     {@link JBRSkia#COMMAND_BLEND_MODE_SRC_IN}. Handles are valid for the current command
-         *     frame only.</li>
+         *     {@link JBRSkia#COMMAND_BLEND_MODE_SRC_IN}. This tint-specific form is kept for
+         *     compatibility; new streams should prefer {@link JBRSkia#COMMAND_DEFINE_EFFECT_DESCRIPTOR}.
+         *     Handles are cached for the current destination context until explicitly evicted or the
+         *     context is invalidated.</li>
+         *     <li>{@link JBRSkia#COMMAND_DEFINE_EFFECT_DESCRIPTOR}: {@code [op,
+         *     32 + payloadIntCount * 4, 0, handleHigh, handleLow, descriptorType,
+         *     descriptorVersion, payloadIntCount, payload0, ...]}, defining a descriptor in the
+         *     current destination context. Version 1 tint color-filter descriptors use
+         *     {@code descriptorType = COMMAND_EFFECT_DESCRIPTOR_TINT_COLOR_FILTER} and payload
+         *     {@code [colorFilterArgb, COMMAND_BLEND_MODE_SRC_IN]}.</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT_COLOR_FILTER_REF}: {@code [op, 40, flags,
          *     argb, handleHigh, handleLow, x, y, width, height]}, where the handle must be defined
          *     earlier in the same command frame or already cached for the current destination context.</li>
