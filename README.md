@@ -99,3 +99,8 @@ painting.
 Clients must read `JBRSkia.ABI_ID` and `JBRSkia.BUILD_ID` reflectively before
 acquiring `JBR.getJBRSkia()`. If either value is incompatible, or if the service
 is unavailable, clients must fall back to their existing rendering path.
+
+Current PoC command ABI is 78. In addition to typed effect descriptors for
+tint, color-matrix, and lighting color filters, this ABI exposes
+`COMMAND_SAVE_LAYER_COLOR_FILTER_REF`, which lets a saveLayer paint reference a
+previously defined descriptor handle without sharing raw Skia pointers.

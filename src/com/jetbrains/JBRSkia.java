@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("77");
+    int ABI_ID = Integer.parseInt("78");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -414,6 +414,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_EFFECT_DESCRIPTOR_LIGHTING_FILTER = Long.parseLong("1152921504606846976");
 
     /**
+     * Capability bit: command streams can save layers with a previously defined color-filter descriptor handle.
+     */
+    long COMMAND_CAP64_SAVE_LAYER_COLOR_FILTER_REF = Long.parseLong("2305843009213693952");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -678,6 +683,11 @@ public interface JBRSkia {
      * color filter.
      */
     int COMMAND_SAVE_LAYER_BLEND_COLOR_FILTER = Integer.parseInt("51");
+
+    /**
+     * Command-list operation: save a layer with alpha and a previously defined color-filter descriptor handle.
+     */
+    int COMMAND_SAVE_LAYER_COLOR_FILTER_REF = Integer.parseInt("52");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1167,6 +1177,9 @@ public interface JBRSkia {
          *     {@code [multiplyArgb, addArgb]}.</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT_COLOR_FILTER_REF}: {@code [op, 40, flags,
          *     argb, handleHigh, handleLow, x, y, width, height]}, where the handle must be defined
+         *     earlier in the same command frame or already cached for the current destination context.</li>
+         *     <li>{@link JBRSkia#COMMAND_SAVE_LAYER_COLOR_FILTER_REF}: {@code [op, 40, 0,
+         *     x, y, width, height, alpha1000, handleHigh, handleLow]}, where the handle must be defined
          *     earlier in the same command frame or already cached for the current destination context.</li>
          *     <li>{@link JBRSkia#COMMAND_EVICT_COLOR_FILTER_HANDLE}: {@code [op, 20, 0,
          *     handleHigh, handleLow]}, evicting one cached color-filter descriptor from the current
