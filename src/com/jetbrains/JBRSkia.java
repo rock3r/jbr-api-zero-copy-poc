@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("81");
+    int ABI_ID = Integer.parseInt("82");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -429,6 +429,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_SAVE_LAYER_BLEND_COLOR_FILTER_REF = Long.parseLong("-9223372036854775808");
 
     /**
+     * High capability bit: command streams can save layers with a previously defined image-filter descriptor handle.
+     */
+    long COMMAND_CAP64_HIGH_SAVE_LAYER_IMAGE_FILTER_REF = Long.parseLong("1");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -710,6 +715,11 @@ public interface JBRSkia {
     int COMMAND_SAVE_LAYER_BLEND_COLOR_FILTER_REF = Integer.parseInt("54");
 
     /**
+     * Command-list operation: save a layer with alpha and a previously defined image-filter descriptor handle.
+     */
+    int COMMAND_SAVE_LAYER_IMAGE_FILTER_REF = Integer.parseInt("55");
+
+    /**
      * Effect descriptor type: tint color filter.
      */
     int COMMAND_EFFECT_DESCRIPTOR_TINT_COLOR_FILTER = Integer.parseInt("1");
@@ -723,6 +733,11 @@ public interface JBRSkia {
      * Effect descriptor type: lighting color filter.
      */
     int COMMAND_EFFECT_DESCRIPTOR_LIGHTING_FILTER = Integer.parseInt("3");
+
+    /**
+     * Effect descriptor type: blur image filter.
+     */
+    int COMMAND_EFFECT_DESCRIPTOR_BLUR_IMAGE_FILTER = Integer.parseInt("4");
 
     /**
      * Effect descriptor schema version 1.
