@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("45");
+    int ABI_ID = Integer.parseInt("46");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -323,6 +323,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_STROKE_RECT_LINEAR_GRADIENT = Long.parseLong("4398046511104");
 
     /**
+     * 64-bit command capability bit: command streams can stroke rounded rectangles with serialized linear-gradient paint.
+     */
+    long COMMAND_CAP64_STROKE_ROUND_RECT_LINEAR_GRADIENT = Long.parseLong("8796093022208");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -506,6 +511,11 @@ public interface JBRSkia {
      * Command-list operation: stroke a rectangle with serialized linear-gradient paint.
      */
     int COMMAND_STROKE_RECT_LINEAR_GRADIENT = Integer.parseInt("35");
+
+    /**
+     * Command-list operation: stroke a rounded rectangle with serialized linear-gradient paint.
+     */
+    int COMMAND_STROKE_ROUND_RECT_LINEAR_GRADIENT = Integer.parseInt("36");
 
     /**
      * Paint-style payload value: fill.
@@ -758,6 +768,11 @@ public interface JBRSkia {
          *     tileMode, colorCount, argb0, stop1000_0, ...]}, with 2..16 colors and stops in [0, 1000].</li>
          *     <li>{@link JBRSkia#COMMAND_STROKE_RECT_LINEAR_GRADIENT}: {@code [op, 68 + colorCount * 8, flags,
          *     left1000, top1000, right1000, bottom1000, strokeWidth1000, strokeCap, strokeJoin, strokeMiter1000,
+         *     fromX1000, fromY1000, toX1000, toY1000, tileMode, colorCount, argb0, stop1000_0, ...]},
+         *     with 2..16 colors and stops in [0, 1000].</li>
+         *     <li>{@link JBRSkia#COMMAND_STROKE_ROUND_RECT_LINEAR_GRADIENT}: {@code [op, 76 + colorCount * 8, flags,
+         *     left1000, top1000, right1000, bottom1000, radiusX1000, radiusY1000,
+         *     strokeWidth1000, strokeCap, strokeJoin, strokeMiter1000,
          *     fromX1000, fromY1000, toX1000, toY1000, tileMode, colorCount, argb0, stop1000_0, ...]},
          *     with 2..16 colors and stops in [0, 1000].</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_ROUND_RECT_LINEAR_GRADIENT}: {@code [op, 60 + colorCount * 8, flags,
