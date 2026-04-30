@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("55");
+    int ABI_ID = Integer.parseInt("56");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -373,6 +373,16 @@ public interface JBRSkia {
     long COMMAND_CAP64_DRAW_IMAGE_REF_COLOR_FILTER = Long.parseLong("4503599627370496");
 
     /**
+     * 64-bit command capability bit: command streams can define reusable color-filter descriptors.
+     */
+    long COMMAND_CAP64_DEFINE_COLOR_FILTER_TINT = Long.parseLong("9007199254740992");
+
+    /**
+     * 64-bit command capability bit: command streams can fill rectangles through a color-filter handle.
+     */
+    long COMMAND_CAP64_FILL_RECT_COLOR_FILTER_REF = Long.parseLong("18014398509481984");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -606,6 +616,16 @@ public interface JBRSkia {
      * Command-list operation: draw a cached image with alpha and a supported color filter.
      */
     int COMMAND_DRAW_IMAGE_REF_COLOR_FILTER = Integer.parseInt("45");
+
+    /**
+     * Command-list operation: define a reusable tint color-filter descriptor in the current command frame.
+     */
+    int COMMAND_DEFINE_COLOR_FILTER_TINT = Integer.parseInt("46");
+
+    /**
+     * Command-list operation: fill a rectangle through a previously defined color-filter descriptor handle.
+     */
+    int COMMAND_FILL_RECT_COLOR_FILTER_REF = Integer.parseInt("47");
 
     /**
      * Blend-mode payload value: plus/additive blending.
@@ -957,6 +977,14 @@ public interface JBRSkia {
          *     alpha1000, filterQuality, colorFilterArgb, colorFilterBlendMode]}, with
          *     {@code colorFilterBlendMode} currently limited to
          *     {@link JBRSkia#COMMAND_BLEND_MODE_SRC_IN}.</li>
+         *     <li>{@link JBRSkia#COMMAND_DEFINE_COLOR_FILTER_TINT}: {@code [op, 28, 0,
+         *     handleHigh, handleLow, colorFilterArgb, colorFilterBlendMode]}, with
+         *     {@code colorFilterBlendMode} currently limited to
+         *     {@link JBRSkia#COMMAND_BLEND_MODE_SRC_IN}. Handles are valid for the current command
+         *     frame only.</li>
+         *     <li>{@link JBRSkia#COMMAND_FILL_RECT_COLOR_FILTER_REF}: {@code [op, 40, flags,
+         *     argb, handleHigh, handleLow, x, y, width, height]}, where the handle must be defined
+         *     earlier in the same command frame.</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT_IMAGE_SHADER}: {@code [op, 56, flags,
          *     left1000, top1000, right1000, bottom1000, cacheKeyHigh, cacheKeyLow, imageWidth,
          *     imageHeight, tileModeX, tileModeY, alpha1000]}, where the image must already be defined
