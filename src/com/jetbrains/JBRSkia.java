@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("73");
+    int ABI_ID = Integer.parseInt("74");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -393,6 +393,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_DEFINE_EFFECT_DESCRIPTOR = Long.parseLong("72057594037927936");
 
     /**
+     * 64-bit command capability bit: command streams can save layers with alpha and a supported blend mode.
+     */
+    long COMMAND_CAP64_SAVE_LAYER_BLEND_MODE = Long.parseLong("144115188075855872");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -646,6 +651,11 @@ public interface JBRSkia {
      * Command-list operation: define a reusable effect descriptor in the current destination context.
      */
     int COMMAND_DEFINE_EFFECT_DESCRIPTOR = Integer.parseInt("49");
+
+    /**
+     * Command-list operation: save a layer with alpha and a supported blend mode.
+     */
+    int COMMAND_SAVE_LAYER_BLEND_MODE = Integer.parseInt("50");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1077,6 +1087,9 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_SCALE}: {@code [op, 20, 0, sx1000, sy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_ROTATE}: {@code [op, 16, 0, degrees1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SAVE_LAYER}: {@code [op, 32, 0, x, y, width, height, alpha1000]}</li>
+         *     <li>{@link JBRSkia#COMMAND_SAVE_LAYER_BLEND_MODE}: {@code [op, 36, 0,
+         *     x, y, width, height, alpha1000, blendMode]}, with {@code blendMode} limited to the same
+         *     direct Skia blend-mode values accepted by {@link JBRSkia#COMMAND_FILL_RECT_BLEND_MODE}.</li>
          *     <li>{@link JBRSkia#COMMAND_SAVE_LAYER_COLOR_FILTER}: {@code [op, 40, 0,
          *     x, y, width, height, alpha1000, colorFilterArgb, colorFilterBlendMode]}, with
          *     {@code alpha1000} in [0, 1000] and {@code colorFilterBlendMode} currently limited to
