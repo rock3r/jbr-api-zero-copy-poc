@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("74");
+    int ABI_ID = Integer.parseInt("75");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -398,6 +398,12 @@ public interface JBRSkia {
     long COMMAND_CAP64_SAVE_LAYER_BLEND_MODE = Long.parseLong("144115188075855872");
 
     /**
+     * 64-bit command capability bit: command streams can save layers with alpha, a supported blend
+     * mode, and a tint/SrcIn color filter.
+     */
+    long COMMAND_CAP64_SAVE_LAYER_BLEND_COLOR_FILTER = Long.parseLong("288230376151711744");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -656,6 +662,12 @@ public interface JBRSkia {
      * Command-list operation: save a layer with alpha and a supported blend mode.
      */
     int COMMAND_SAVE_LAYER_BLEND_MODE = Integer.parseInt("50");
+
+    /**
+     * Command-list operation: save a layer with alpha, a supported blend mode, and a tint/SrcIn
+     * color filter.
+     */
+    int COMMAND_SAVE_LAYER_BLEND_COLOR_FILTER = Integer.parseInt("51");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1094,6 +1106,10 @@ public interface JBRSkia {
          *     x, y, width, height, alpha1000, colorFilterArgb, colorFilterBlendMode]}, with
          *     {@code alpha1000} in [0, 1000] and {@code colorFilterBlendMode} currently limited to
          *     {@link JBRSkia#COMMAND_BLEND_MODE_SRC_IN}.</li>
+         *     <li>{@link JBRSkia#COMMAND_SAVE_LAYER_BLEND_COLOR_FILTER}: {@code [op, 44, 0,
+         *     x, y, width, height, alpha1000, blendMode, colorFilterArgb, colorFilterBlendMode]},
+         *     with {@code blendMode} limited to direct Skia blend-mode values and
+         *     {@code colorFilterBlendMode} currently limited to {@link JBRSkia#COMMAND_BLEND_MODE_SRC_IN}.</li>
          *     <li>{@link JBRSkia#COMMAND_DRAW_IMAGE_ARGB}: {@code [op, 64 + pixelCount * 4, flags,
          *     srcLeft1000, srcTop1000, srcRight1000, srcBottom1000, dstLeft1000, dstTop1000,
          *     dstRight1000, dstBottom1000, imageWidth, imageHeight, alpha1000, filterQuality,
