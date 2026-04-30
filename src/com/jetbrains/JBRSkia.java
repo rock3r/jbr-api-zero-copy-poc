@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("76");
+    int ABI_ID = Integer.parseInt("77");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -409,6 +409,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_EFFECT_DESCRIPTOR_COLOR_MATRIX_FILTER = Long.parseLong("576460752303423488");
 
     /**
+     * Capability bit: command streams may define lighting color-filter effect descriptors.
+     */
+    long COMMAND_CAP64_EFFECT_DESCRIPTOR_LIGHTING_FILTER = Long.parseLong("1152921504606846976");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -683,6 +688,11 @@ public interface JBRSkia {
      * Effect descriptor type: color-matrix color filter.
      */
     int COMMAND_EFFECT_DESCRIPTOR_COLOR_MATRIX_FILTER = Integer.parseInt("2");
+
+    /**
+     * Effect descriptor type: lighting color filter.
+     */
+    int COMMAND_EFFECT_DESCRIPTOR_LIGHTING_FILTER = Integer.parseInt("3");
 
     /**
      * Effect descriptor schema version 1.
@@ -1152,7 +1162,9 @@ public interface JBRSkia {
          *     color-filter descriptors use
          *     {@code descriptorType = COMMAND_EFFECT_DESCRIPTOR_COLOR_MATRIX_FILTER} and a
          *     20-int payload containing {@code Float.floatToRawIntBits(...)} for the row-major
-         *     4x5 matrix.</li>
+         *     4x5 matrix. Version 1 lighting color-filter descriptors use
+         *     {@code descriptorType = COMMAND_EFFECT_DESCRIPTOR_LIGHTING_FILTER} and payload
+         *     {@code [multiplyArgb, addArgb]}.</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT_COLOR_FILTER_REF}: {@code [op, 40, flags,
          *     argb, handleHigh, handleLow, x, y, width, height]}, where the handle must be defined
          *     earlier in the same command frame or already cached for the current destination context.</li>
