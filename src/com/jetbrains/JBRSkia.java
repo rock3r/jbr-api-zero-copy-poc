@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("52");
+    int ABI_ID = Integer.parseInt("53");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -358,6 +358,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_FILL_RECT_COLOR_FILTER = Long.parseLong("562949953421312");
 
     /**
+     * 64-bit command capability bit: command streams can stroke lines with a dash path effect.
+     */
+    long COMMAND_CAP64_STROKE_LINE_DASH_PATH_EFFECT = Long.parseLong("1125899906842624");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -576,6 +581,11 @@ public interface JBRSkia {
      * Command-list operation: fill a rectangle with one ARGB color and an explicit color filter.
      */
     int COMMAND_FILL_RECT_COLOR_FILTER = Integer.parseInt("42");
+
+    /**
+     * Command-list operation: stroke a line with a dash path effect.
+     */
+    int COMMAND_STROKE_LINE_DASH_PATH_EFFECT = Integer.parseInt("43");
 
     /**
      * Blend-mode payload value: plus/additive blending.
@@ -900,6 +910,9 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT_COLOR_FILTER}: {@code [op, 40, flags, argb,
          *     colorFilterArgb, colorFilterBlendMode, x, y, width, height]}, with
          *     {@code colorFilterBlendMode} currently limited to {@link JBRSkia#COMMAND_BLEND_MODE_SRC_IN}.</li>
+         *     <li>{@link JBRSkia#COMMAND_STROKE_LINE_DASH_PATH_EFFECT}: {@code [op, 56 + intervalCount * 4,
+         *     flags, argb, x1, y1, x2, y2, strokeWidth, strokeCap, strokeJoin, strokeMiter1000,
+         *     phase1000, intervalCount, interval1000_0, ...]}, with 2..16 positive intervals.</li>
          *     <li>{@link JBRSkia#COMMAND_TRANSLATE}: {@code [op, 20, 0, dx1000, dy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SCALE}: {@code [op, 20, 0, sx1000, sy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_ROTATE}: {@code [op, 16, 0, degrees1000]}</li>
