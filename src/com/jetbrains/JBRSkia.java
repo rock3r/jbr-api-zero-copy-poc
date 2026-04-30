@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("51");
+    int ABI_ID = Integer.parseInt("52");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -353,6 +353,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_FILL_RECT_BLEND_MODE = Long.parseLong("281474976710656");
 
     /**
+     * 64-bit command capability bit: command streams can fill rectangles with a supported color filter.
+     */
+    long COMMAND_CAP64_FILL_RECT_COLOR_FILTER = Long.parseLong("562949953421312");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -568,9 +573,19 @@ public interface JBRSkia {
     int COMMAND_FILL_RECT_BLEND_MODE = Integer.parseInt("41");
 
     /**
+     * Command-list operation: fill a rectangle with one ARGB color and an explicit color filter.
+     */
+    int COMMAND_FILL_RECT_COLOR_FILTER = Integer.parseInt("42");
+
+    /**
      * Blend-mode payload value: plus/additive blending.
      */
     int COMMAND_BLEND_MODE_PLUS = Integer.parseInt("1");
+
+    /**
+     * Blend-mode payload value: source-in compositing.
+     */
+    int COMMAND_BLEND_MODE_SRC_IN = Integer.parseInt("2");
 
     /**
      * Paint-style payload value: fill.
@@ -882,6 +897,9 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT_BLEND_MODE}: {@code [op, 36, flags, argb, blendMode,
          *     x, y, width, height]}, with {@code blendMode} currently limited to
          *     {@link JBRSkia#COMMAND_BLEND_MODE_PLUS}.</li>
+         *     <li>{@link JBRSkia#COMMAND_FILL_RECT_COLOR_FILTER}: {@code [op, 40, flags, argb,
+         *     colorFilterArgb, colorFilterBlendMode, x, y, width, height]}, with
+         *     {@code colorFilterBlendMode} currently limited to {@link JBRSkia#COMMAND_BLEND_MODE_SRC_IN}.</li>
          *     <li>{@link JBRSkia#COMMAND_TRANSLATE}: {@code [op, 20, 0, dx1000, dy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SCALE}: {@code [op, 20, 0, sx1000, sy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_ROTATE}: {@code [op, 16, 0, degrees1000]}</li>
