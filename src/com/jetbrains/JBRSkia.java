@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("50");
+    int ABI_ID = Integer.parseInt("51");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -348,6 +348,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_STROKE_ROUND_RECT_SWEEP_GRADIENT = Long.parseLong("140737488355328");
 
     /**
+     * 64-bit command capability bit: command streams can fill rectangles with supported blend modes.
+     */
+    long COMMAND_CAP64_FILL_RECT_BLEND_MODE = Long.parseLong("281474976710656");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -556,6 +561,16 @@ public interface JBRSkia {
      * Command-list operation: stroke a rounded rectangle with serialized sweep-gradient paint.
      */
     int COMMAND_STROKE_ROUND_RECT_SWEEP_GRADIENT = Integer.parseInt("40");
+
+    /**
+     * Command-list operation: fill a rectangle with one ARGB color and an explicit blend mode.
+     */
+    int COMMAND_FILL_RECT_BLEND_MODE = Integer.parseInt("41");
+
+    /**
+     * Blend-mode payload value: plus/additive blending.
+     */
+    int COMMAND_BLEND_MODE_PLUS = Integer.parseInt("1");
 
     /**
      * Paint-style payload value: fill.
@@ -864,6 +879,9 @@ public interface JBRSkia {
          *     colorCount, argb0, stop1000_0, ...]}, where path data is a sequence of
          *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000, with 2..16
          *     colors and stops in [0, 1000].</li>
+         *     <li>{@link JBRSkia#COMMAND_FILL_RECT_BLEND_MODE}: {@code [op, 36, flags, argb, blendMode,
+         *     x, y, width, height]}, with {@code blendMode} currently limited to
+         *     {@link JBRSkia#COMMAND_BLEND_MODE_PLUS}.</li>
          *     <li>{@link JBRSkia#COMMAND_TRANSLATE}: {@code [op, 20, 0, dx1000, dy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SCALE}: {@code [op, 20, 0, sx1000, sy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_ROTATE}: {@code [op, 16, 0, degrees1000]}</li>
