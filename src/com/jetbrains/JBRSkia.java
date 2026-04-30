@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("43");
+    int ABI_ID = Integer.parseInt("44");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -313,6 +313,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_TEXT_FONT_FAMILY = Long.parseLong("1099511627776");
 
     /**
+     * 64-bit command capability bit: command streams can fill rectangles with a JBR-owned image shader.
+     */
+    long COMMAND_CAP64_FILL_RECT_IMAGE_SHADER = Long.parseLong("2199023255552");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -486,6 +491,11 @@ public interface JBRSkia {
      * Evicts one cached image key from the current destination context.
      */
     int COMMAND_EVICT_IMAGE_CACHE_KEY = Integer.parseInt("33");
+
+    /**
+     * Command-list operation: fill a rectangle with a cached image shader owned by JBR's Skia runtime.
+     */
+    int COMMAND_FILL_RECT_IMAGE_SHADER = Integer.parseInt("34");
 
     /**
      * Paint-style payload value: fill.
@@ -782,6 +792,10 @@ public interface JBRSkia {
          *     srcLeft1000, srcTop1000, srcRight1000, srcBottom1000, dstLeft1000, dstTop1000,
          *     dstRight1000, dstBottom1000, cacheKeyHigh, cacheKeyLow, imageWidth, imageHeight,
          *     alpha1000, filterQuality]}</li>
+         *     <li>{@link JBRSkia#COMMAND_FILL_RECT_IMAGE_SHADER}: {@code [op, 56, flags,
+         *     left1000, top1000, right1000, bottom1000, cacheKeyHigh, cacheKeyLow, imageWidth,
+         *     imageHeight, tileModeX, tileModeY, alpha1000]}, where the image must already be defined
+         *     through {@link JBRSkia#COMMAND_DEFINE_IMAGE_ARGB} in the current destination context.</li>
          *     <li>{@link JBRSkia#COMMAND_DRAW_TEXT_UTF16}: {@code [op, 36 + (fontFamilyCharCount + charCount) * 4, flags,
          *     x1000, baseline1000, fontSize1000, argb, fontFamilyCharCount, familyCodeUnit0, ...,
          *     charCount, codeUnit0, ...]}</li>
