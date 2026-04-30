@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("56");
+    int ABI_ID = Integer.parseInt("57");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -383,6 +383,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_FILL_RECT_COLOR_FILTER_REF = Long.parseLong("18014398509481984");
 
     /**
+     * 64-bit command capability bit: command streams may evict scoped color-filter descriptors.
+     */
+    long COMMAND_CAP64_EVICT_COLOR_FILTER_HANDLE = Long.parseLong("36028797018963968");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -626,6 +631,11 @@ public interface JBRSkia {
      * Command-list operation: fill a rectangle through a previously defined color-filter descriptor handle.
      */
     int COMMAND_FILL_RECT_COLOR_FILTER_REF = Integer.parseInt("47");
+
+    /**
+     * Command-list operation: evict a reusable color-filter descriptor from the current destination context.
+     */
+    int COMMAND_EVICT_COLOR_FILTER_HANDLE = Integer.parseInt("48");
 
     /**
      * Blend-mode payload value: plus/additive blending.
@@ -984,7 +994,10 @@ public interface JBRSkia {
          *     frame only.</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT_COLOR_FILTER_REF}: {@code [op, 40, flags,
          *     argb, handleHigh, handleLow, x, y, width, height]}, where the handle must be defined
-         *     earlier in the same command frame.</li>
+         *     earlier in the same command frame or already cached for the current destination context.</li>
+         *     <li>{@link JBRSkia#COMMAND_EVICT_COLOR_FILTER_HANDLE}: {@code [op, 20, 0,
+         *     handleHigh, handleLow]}, evicting one cached color-filter descriptor from the current
+         *     destination context.</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT_IMAGE_SHADER}: {@code [op, 56, flags,
          *     left1000, top1000, right1000, bottom1000, cacheKeyHigh, cacheKeyLow, imageWidth,
          *     imageHeight, tileModeX, tileModeY, alpha1000]}, where the image must already be defined
