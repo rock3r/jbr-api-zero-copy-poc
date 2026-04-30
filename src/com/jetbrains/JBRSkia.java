@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("71");
+    int ABI_ID = Integer.parseInt("72");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -733,6 +733,11 @@ public interface JBRSkia {
     int COMMAND_BLEND_MODE_SATURATION = Integer.parseInt("15");
 
     /**
+     * Color blend mode for solid fill-rectangle commands.
+     */
+    int COMMAND_BLEND_MODE_COLOR = Integer.parseInt("16");
+
+    /**
      * Paint-style payload value: fill.
      */
     int COMMAND_PAINT_STYLE_FILL = Integer.parseInt("0");
@@ -1054,7 +1059,8 @@ public interface JBRSkia {
      *     {@link JBRSkia#COMMAND_BLEND_MODE_HARDLIGHT} and
      *     {@link JBRSkia#COMMAND_BLEND_MODE_SOFTLIGHT} and
      *     {@link JBRSkia#COMMAND_BLEND_MODE_HUE} and
-     *     {@link JBRSkia#COMMAND_BLEND_MODE_SATURATION}.</li>
+     *     {@link JBRSkia#COMMAND_BLEND_MODE_SATURATION} and
+     *     {@link JBRSkia#COMMAND_BLEND_MODE_COLOR}.</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT_COLOR_FILTER}: {@code [op, 40, flags, argb,
          *     colorFilterArgb, colorFilterBlendMode, x, y, width, height]}, with
          *     {@code colorFilterBlendMode} currently limited to {@link JBRSkia#COMMAND_BLEND_MODE_SRC_IN}.</li>
