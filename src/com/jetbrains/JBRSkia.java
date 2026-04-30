@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("75");
+    int ABI_ID = Integer.parseInt("76");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -404,6 +404,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_SAVE_LAYER_BLEND_COLOR_FILTER = Long.parseLong("288230376151711744");
 
     /**
+     * Capability bit: command streams may define color-matrix color-filter effect descriptors.
+     */
+    long COMMAND_CAP64_EFFECT_DESCRIPTOR_COLOR_MATRIX_FILTER = Long.parseLong("576460752303423488");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -673,6 +678,11 @@ public interface JBRSkia {
      * Effect descriptor type: tint color filter.
      */
     int COMMAND_EFFECT_DESCRIPTOR_TINT_COLOR_FILTER = Integer.parseInt("1");
+
+    /**
+     * Effect descriptor type: color-matrix color filter.
+     */
+    int COMMAND_EFFECT_DESCRIPTOR_COLOR_MATRIX_FILTER = Integer.parseInt("2");
 
     /**
      * Effect descriptor schema version 1.
@@ -1138,7 +1148,11 @@ public interface JBRSkia {
          *     descriptorVersion, payloadIntCount, payload0, ...]}, defining a descriptor in the
          *     current destination context. Version 1 tint color-filter descriptors use
          *     {@code descriptorType = COMMAND_EFFECT_DESCRIPTOR_TINT_COLOR_FILTER} and payload
-         *     {@code [colorFilterArgb, COMMAND_BLEND_MODE_SRC_IN]}.</li>
+         *     {@code [colorFilterArgb, COMMAND_BLEND_MODE_SRC_IN]}. Version 1 color-matrix
+         *     color-filter descriptors use
+         *     {@code descriptorType = COMMAND_EFFECT_DESCRIPTOR_COLOR_MATRIX_FILTER} and a
+         *     20-int payload containing {@code Float.floatToRawIntBits(...)} for the row-major
+         *     4x5 matrix.</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT_COLOR_FILTER_REF}: {@code [op, 40, flags,
          *     argb, handleHigh, handleLow, x, y, width, height]}, where the handle must be defined
          *     earlier in the same command frame or already cached for the current destination context.</li>
