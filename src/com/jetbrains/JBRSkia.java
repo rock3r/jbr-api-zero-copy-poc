@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("78");
+    int ABI_ID = Integer.parseInt("79");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -419,6 +419,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_SAVE_LAYER_COLOR_FILTER_REF = Long.parseLong("2305843009213693952");
 
     /**
+     * Capability bit: command streams can draw cached images with a previously defined color-filter descriptor handle.
+     */
+    long COMMAND_CAP64_DRAW_IMAGE_REF_COLOR_FILTER_REF = Long.parseLong("4611686018427387904");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -688,6 +693,11 @@ public interface JBRSkia {
      * Command-list operation: save a layer with alpha and a previously defined color-filter descriptor handle.
      */
     int COMMAND_SAVE_LAYER_COLOR_FILTER_REF = Integer.parseInt("52");
+
+    /**
+     * Command-list operation: draw a cached image with alpha and a previously defined color-filter descriptor handle.
+     */
+    int COMMAND_DRAW_IMAGE_REF_COLOR_FILTER_REF = Integer.parseInt("53");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1181,6 +1191,11 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_SAVE_LAYER_COLOR_FILTER_REF}: {@code [op, 40, 0,
          *     x, y, width, height, alpha1000, handleHigh, handleLow]}, where the handle must be defined
          *     earlier in the same command frame or already cached for the current destination context.</li>
+         *     <li>{@link JBRSkia#COMMAND_DRAW_IMAGE_REF_COLOR_FILTER_REF}: {@code [op, 76, flags,
+         *     srcLeft1000, srcTop1000, srcRight1000, srcBottom1000, dstLeft1000, dstTop1000,
+         *     dstRight1000, dstBottom1000, cacheKeyHigh, cacheKeyLow, imageWidth, imageHeight,
+         *     alpha1000, filterQuality, handleHigh, handleLow]}, where both the image cache key and
+         *     color-filter descriptor handle must be defined for the current destination context.</li>
          *     <li>{@link JBRSkia#COMMAND_EVICT_COLOR_FILTER_HANDLE}: {@code [op, 20, 0,
          *     handleHigh, handleLow]}, evicting one cached color-filter descriptor from the current
          *     destination context.</li>
