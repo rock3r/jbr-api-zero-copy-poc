@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("53");
+    int ABI_ID = Integer.parseInt("54");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -363,6 +363,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_STROKE_LINE_DASH_PATH_EFFECT = Long.parseLong("1125899906842624");
 
     /**
+     * 64-bit command capability bit: command streams can save layers with a supported color filter.
+     */
+    long COMMAND_CAP64_SAVE_LAYER_COLOR_FILTER = Long.parseLong("2251799813685248");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -586,6 +591,11 @@ public interface JBRSkia {
      * Command-list operation: stroke a line with a dash path effect.
      */
     int COMMAND_STROKE_LINE_DASH_PATH_EFFECT = Integer.parseInt("43");
+
+    /**
+     * Command-list operation: save a layer with alpha and a supported color filter.
+     */
+    int COMMAND_SAVE_LAYER_COLOR_FILTER = Integer.parseInt("44");
 
     /**
      * Blend-mode payload value: plus/additive blending.
@@ -917,6 +927,10 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_SCALE}: {@code [op, 20, 0, sx1000, sy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_ROTATE}: {@code [op, 16, 0, degrees1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SAVE_LAYER}: {@code [op, 32, 0, x, y, width, height, alpha1000]}</li>
+         *     <li>{@link JBRSkia#COMMAND_SAVE_LAYER_COLOR_FILTER}: {@code [op, 40, 0,
+         *     x, y, width, height, alpha1000, colorFilterArgb, colorFilterBlendMode]}, with
+         *     {@code alpha1000} in [0, 1000] and {@code colorFilterBlendMode} currently limited to
+         *     {@link JBRSkia#COMMAND_BLEND_MODE_SRC_IN}.</li>
          *     <li>{@link JBRSkia#COMMAND_DRAW_IMAGE_ARGB}: {@code [op, 64 + pixelCount * 4, flags,
          *     srcLeft1000, srcTop1000, srcRight1000, srcBottom1000, dstLeft1000, dstTop1000,
          *     dstRight1000, dstBottom1000, imageWidth, imageHeight, alpha1000, filterQuality,
