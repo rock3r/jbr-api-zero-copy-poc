@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("42");
+    int ABI_ID = Integer.parseInt("43");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -183,7 +183,7 @@ public interface JBRSkia {
     int COMMAND_CAP_IMAGE_CACHE = Integer.parseInt("32768");
 
     /**
-     * Capability bit: command streams can draw simple UTF-16 text runs with a JBR-owned default font.
+     * Capability bit: command streams can draw simple UTF-16 text runs with JBR-owned font resolution.
      */
     int COMMAND_CAP_DRAW_TEXT_UTF16 = Integer.parseInt("65536");
 
@@ -306,6 +306,11 @@ public interface JBRSkia {
      * Capability bit: command streams may evict one cached image key from the current destination context.
      */
     long COMMAND_CAP64_EVICT_IMAGE_CACHE_KEY = Long.parseLong("549755813888");
+
+    /**
+     * 64-bit command capability bit: native text commands carry a UTF-16 font-family name resolved by JBR.
+     */
+    long COMMAND_CAP64_TEXT_FONT_FAMILY = Long.parseLong("1099511627776");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -777,14 +782,15 @@ public interface JBRSkia {
          *     srcLeft1000, srcTop1000, srcRight1000, srcBottom1000, dstLeft1000, dstTop1000,
          *     dstRight1000, dstBottom1000, cacheKeyHigh, cacheKeyLow, imageWidth, imageHeight,
          *     alpha1000, filterQuality]}</li>
-         *     <li>{@link JBRSkia#COMMAND_DRAW_TEXT_UTF16}: {@code [op, 32 + charCount * 4, flags,
-         *     x1000, baseline1000, fontSize1000, argb, charCount, codeUnit0, ...]}</li>
+         *     <li>{@link JBRSkia#COMMAND_DRAW_TEXT_UTF16}: {@code [op, 36 + (fontFamilyCharCount + charCount) * 4, flags,
+         *     x1000, baseline1000, fontSize1000, argb, fontFamilyCharCount, familyCodeUnit0, ...,
+         *     charCount, codeUnit0, ...]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLEAR_IMAGE_CACHE}: {@code [op, 12, 0]}</li>
          *     <li>{@link JBRSkia#COMMAND_EVICT_IMAGE_CACHE_KEY}: {@code [op, 20, 0,
          *     cacheKeyHigh, cacheKeyLow]}</li>
-         *     <li>{@link JBRSkia#COMMAND_DRAW_PARAGRAPH_UTF16}: {@code [op, 84 + charCount * 4, flags,
+         *     <li>{@link JBRSkia#COMMAND_DRAW_PARAGRAPH_UTF16}: {@code [op, 88 + (fontFamilyCharCount + charCount) * 4, flags,
          *     x1000, y1000, width1000, fontSize1000, argb, fontWeight, fontWidth, fontSlant,
-         *     textAlign, textDirection, lineHeightMultiplier1000, maxLines, ellipsisMode,
+         *     fontFamilyCharCount, familyCodeUnit0, ..., textAlign, textDirection, lineHeightMultiplier1000, maxLines, ellipsisMode,
          *     decorationMask, letterSpacing1000, backgroundSpecified, backgroundArgb, charCount,
          *     codeUnit0, ...]}</li>
          * </ul>
