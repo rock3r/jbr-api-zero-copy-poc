@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("88");
+    int ABI_ID = Integer.parseInt("89");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
