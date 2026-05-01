@@ -114,4 +114,5 @@ ABI 82 uses that high word for `COMMAND_SAVE_LAYER_IMAGE_FILTER_REF` and
 `COMMAND_EFFECT_DESCRIPTOR_BLUR_IMAGE_FILTER`, the first JBR-owned image-filter
 descriptor used by graphics-layer `BlurEffect` command replay. ABI 83 adds
 `COMMAND_EFFECT_DESCRIPTOR_OFFSET_IMAGE_FILTER` for simple graphics-layer
-`OffsetEffect` command replay.
+`OffsetEffect` command replay. ABI 84 adds child-input descriptor variants for
+chained image filters such as `OffsetEffect(BlurEffect(...), ...)`.

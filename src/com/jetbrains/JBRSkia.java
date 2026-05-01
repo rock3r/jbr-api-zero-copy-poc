@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("83");
+    int ABI_ID = Integer.parseInt("84");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -439,6 +439,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_EFFECT_DESCRIPTOR_OFFSET_IMAGE_FILTER = Long.parseLong("2");
 
     /**
+     * High capability bit: command streams may define image-filter effect descriptors with child inputs.
+     */
+    long COMMAND_CAP64_HIGH_EFFECT_DESCRIPTOR_CHAIN_IMAGE_FILTER = Long.parseLong("4");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -748,6 +753,16 @@ public interface JBRSkia {
      * Effect descriptor type: offset image filter.
      */
     int COMMAND_EFFECT_DESCRIPTOR_OFFSET_IMAGE_FILTER = Integer.parseInt("5");
+
+    /**
+     * Effect descriptor type: blur image filter with a child input descriptor.
+     */
+    int COMMAND_EFFECT_DESCRIPTOR_BLUR_IMAGE_FILTER_WITH_INPUT = Integer.parseInt("6");
+
+    /**
+     * Effect descriptor type: offset image filter with a child input descriptor.
+     */
+    int COMMAND_EFFECT_DESCRIPTOR_OFFSET_IMAGE_FILTER_WITH_INPUT = Integer.parseInt("7");
 
     /**
      * Effect descriptor schema version 1.
