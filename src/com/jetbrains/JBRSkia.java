@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("91");
+    int ABI_ID = Integer.parseInt("92");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -1317,9 +1317,10 @@ public interface JBRSkia {
          *     {@code descriptorType = COMMAND_EFFECT_DESCRIPTOR_LIGHTING_FILTER} and payload
          *     {@code [multiplyArgb, addArgb]}. Version 1 RuntimeEffect color-filter descriptors
          *     use {@code descriptorType = COMMAND_EFFECT_DESCRIPTOR_RUNTIME_COLOR_FILTER} and
-         *     payload {@code [skslLength, uniformFloatCount, namedUniformCount, sourceHashHigh,
-         *     sourceHashLow, uniformNameLength, uniformOffset, uniformFloatCount, nameChar0, ...,
-         *     skslChar0, ..., uniformRawBits0, ...]}.</li>
+         *     payload {@code [skslLength, uniformFloatCount, childCount, namedUniformCount,
+         *     namedChildCount, sourceHashHigh, sourceHashLow, childHandleHigh, childHandleLow, ...,
+         *     uniformOffset, uniformFloatCount, uniformNameLength, uniformNameChar0, ...,
+         *     childIndex, childNameLength, childNameChar0, ..., skslChar0, ..., uniformRawBits0, ...]}.</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT_COLOR_FILTER_REF}: {@code [op, 40, flags,
          *     argb, handleHigh, handleLow, x, y, width, height]}, where the handle must be defined
          *     earlier in the same command frame or already cached for the current destination context.</li>
