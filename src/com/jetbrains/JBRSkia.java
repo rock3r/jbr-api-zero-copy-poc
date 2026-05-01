@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("92");
+    int ABI_ID = Integer.parseInt("93");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -454,6 +454,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_EFFECT_DESCRIPTOR_RUNTIME_COLOR_FILTER = Long.parseLong("16");
 
     /**
+     * High capability bit: command streams may stroke rectangles with dash path-effect metadata.
+     */
+    long COMMAND_CAP64_HIGH_STROKE_RECT_DASH_PATH_EFFECT = Long.parseLong("32");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -753,6 +758,11 @@ public interface JBRSkia {
      * Command-list operation: fill a rectangle with a previously defined shader descriptor handle.
      */
     int COMMAND_FILL_RECT_SHADER_REF = Integer.parseInt("58");
+
+    /**
+     * Command-list operation: stroke a rectangle with dash path-effect metadata.
+     */
+    int COMMAND_STROKE_RECT_DASH_PATH_EFFECT = Integer.parseInt("59");
 
     /**
      * Effect descriptor type: tint color filter.
