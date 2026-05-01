@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("98");
+    int ABI_ID = Integer.parseInt("99");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -474,6 +474,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_PATH_EFFECT_DESCRIPTOR_REF = Long.parseLong("256");
 
     /**
+     * High capability bit: command streams may concatenate a 3x3 transform matrix.
+     */
+    long COMMAND_CAP64_HIGH_CONCAT_MATRIX33 = Long.parseLong("512");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -793,6 +798,12 @@ public interface JBRSkia {
      * Draw an arbitrary path with a descriptor-backed path effect.
      */
     int COMMAND_DRAW_PATH_PATH_EFFECT_REF = Integer.parseInt("62");
+
+    /**
+     * Concatenate a 3x3 transform matrix encoded as nine raw float bits in SkMatrix order:
+     * scaleX, skewX, translateX, skewY, scaleY, translateY, perspective0, perspective1, perspective2.
+     */
+    int COMMAND_CONCAT_MATRIX33 = Integer.parseInt("63");
 
     /**
      * Effect descriptor type: tint color filter.
