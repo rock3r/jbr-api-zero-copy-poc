@@ -479,6 +479,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_CONCAT_MATRIX33 = Long.parseLong("512");
 
     /**
+     * High capability bit: command streams may draw Skia shadow geometry for a path.
+     */
+    long COMMAND_CAP64_HIGH_DRAW_SHADOW_PATH = Long.parseLong("1024");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -804,6 +809,11 @@ public interface JBRSkia {
      * scaleX, skewX, translateX, skewY, scaleY, translateY, perspective0, perspective1, perspective2.
      */
     int COMMAND_CONCAT_MATRIX33 = Integer.parseInt("63");
+
+    /**
+     * Draw Skia shadow geometry for an arbitrary path.
+     */
+    int COMMAND_DRAW_SHADOW_PATH = Integer.parseInt("64");
 
     /**
      * Effect descriptor type: tint color filter.
