@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("85");
+    int ABI_ID = Integer.parseInt("86");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -813,6 +813,11 @@ public interface JBRSkia {
      * Shader descriptor type: blend of two child shader descriptors.
      */
     int COMMAND_SHADER_DESCRIPTOR_COMPOSITE = Integer.parseInt("5");
+
+    /**
+     * Shader descriptor type: Skia RuntimeEffect shader with inline SKSL and uniform payload.
+     */
+    int COMMAND_SHADER_DESCRIPTOR_RUNTIME_EFFECT = Integer.parseInt("6");
 
     /**
      * Shader descriptor schema version 1.
