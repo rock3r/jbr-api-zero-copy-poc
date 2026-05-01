@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("97");
+    int ABI_ID = Integer.parseInt("98");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -843,6 +843,11 @@ public interface JBRSkia {
      * Effect descriptor type: a stamped/path-1D path effect.
      */
     int COMMAND_EFFECT_DESCRIPTOR_STAMPED_PATH_EFFECT = Integer.parseInt("10");
+
+    /**
+     * Effect descriptor type: a composed path effect with outer and inner child descriptor handles.
+     */
+    int COMMAND_EFFECT_DESCRIPTOR_CHAIN_PATH_EFFECT = Integer.parseInt("11");
 
     /**
      * Effect descriptor schema version 1.
