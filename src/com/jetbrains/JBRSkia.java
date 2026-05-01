@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("84");
+    int ABI_ID = Integer.parseInt("85");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -444,6 +444,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_EFFECT_DESCRIPTOR_CHAIN_IMAGE_FILTER = Long.parseLong("4");
 
     /**
+     * High capability bit: command streams may define shader descriptors and draw rectangles with shader handles.
+     */
+    long COMMAND_CAP64_HIGH_SHADER_DESCRIPTOR_REF = Long.parseLong("8");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -730,6 +735,21 @@ public interface JBRSkia {
     int COMMAND_SAVE_LAYER_IMAGE_FILTER_REF = Integer.parseInt("55");
 
     /**
+     * Command-list operation: define a shader descriptor handle.
+     */
+    int COMMAND_DEFINE_SHADER_DESCRIPTOR = Integer.parseInt("56");
+
+    /**
+     * Command-list operation: evict a shader descriptor handle.
+     */
+    int COMMAND_EVICT_SHADER_HANDLE = Integer.parseInt("57");
+
+    /**
+     * Command-list operation: fill a rectangle with a previously defined shader descriptor handle.
+     */
+    int COMMAND_FILL_RECT_SHADER_REF = Integer.parseInt("58");
+
+    /**
      * Effect descriptor type: tint color filter.
      */
     int COMMAND_EFFECT_DESCRIPTOR_TINT_COLOR_FILTER = Integer.parseInt("1");
@@ -768,6 +788,36 @@ public interface JBRSkia {
      * Effect descriptor schema version 1.
      */
     int COMMAND_EFFECT_DESCRIPTOR_VERSION_1 = Integer.parseInt("1");
+
+    /**
+     * Shader descriptor type: linear gradient.
+     */
+    int COMMAND_SHADER_DESCRIPTOR_LINEAR_GRADIENT = Integer.parseInt("1");
+
+    /**
+     * Shader descriptor type: radial gradient.
+     */
+    int COMMAND_SHADER_DESCRIPTOR_RADIAL_GRADIENT = Integer.parseInt("2");
+
+    /**
+     * Shader descriptor type: sweep gradient.
+     */
+    int COMMAND_SHADER_DESCRIPTOR_SWEEP_GRADIENT = Integer.parseInt("3");
+
+    /**
+     * Shader descriptor type: cached image shader.
+     */
+    int COMMAND_SHADER_DESCRIPTOR_IMAGE = Integer.parseInt("4");
+
+    /**
+     * Shader descriptor type: blend of two child shader descriptors.
+     */
+    int COMMAND_SHADER_DESCRIPTOR_COMPOSITE = Integer.parseInt("5");
+
+    /**
+     * Shader descriptor schema version 1.
+     */
+    int COMMAND_SHADER_DESCRIPTOR_VERSION_1 = Integer.parseInt("1");
 
     /**
      * Blend-mode payload value: plus/additive blending.
@@ -853,6 +903,11 @@ public interface JBRSkia {
      * Luminosity blend mode for solid fill-rectangle commands.
      */
     int COMMAND_BLEND_MODE_LUMINOSITY = Integer.parseInt("17");
+
+    /**
+     * Source-over blend mode for shader descriptor composition.
+     */
+    int COMMAND_BLEND_MODE_SRC_OVER = Integer.parseInt("18");
 
     /**
      * Paint-style payload value: fill.
