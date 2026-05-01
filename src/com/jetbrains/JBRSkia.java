@@ -482,6 +482,8 @@ public interface JBRSkia {
      * High capability bit: command streams may draw Skia shadow geometry for a path.
      */
     long COMMAND_CAP64_HIGH_DRAW_SHADOW_PATH = Long.parseLong("1024");
+    /** Supports shader descriptors that apply typed color-filter descriptor handles. */
+    long COMMAND_CAP64_HIGH_SHADER_DESCRIPTOR_COLOR_FILTER = Long.parseLong("2048");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -904,6 +906,8 @@ public interface JBRSkia {
      * Shader descriptor type: Skia RuntimeEffect shader with inline SKSL and uniform payload.
      */
     int COMMAND_SHADER_DESCRIPTOR_RUNTIME_EFFECT = Integer.parseInt("6");
+    /** Shader descriptor type whose payload is shader-handle high/low and color-filter-handle high/low. */
+    int COMMAND_SHADER_DESCRIPTOR_COLOR_FILTER = Integer.parseInt("7");
 
     /**
      * Shader descriptor schema version 1.
