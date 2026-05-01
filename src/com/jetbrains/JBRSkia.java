@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("95");
+    int ABI_ID = Integer.parseInt("96");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -469,6 +469,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_STROKE_PATH_DASH_PATH_EFFECT = Long.parseLong("128");
 
     /**
+     * High capability bit: command streams may draw paths with descriptor-backed path effects.
+     */
+    long COMMAND_CAP64_HIGH_PATH_EFFECT_DESCRIPTOR_REF = Long.parseLong("256");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -785,6 +790,11 @@ public interface JBRSkia {
     int COMMAND_STROKE_PATH_DASH_PATH_EFFECT = Integer.parseInt("61");
 
     /**
+     * Draw an arbitrary path with a descriptor-backed path effect.
+     */
+    int COMMAND_DRAW_PATH_PATH_EFFECT_REF = Integer.parseInt("62");
+
+    /**
      * Effect descriptor type: tint color filter.
      */
     int COMMAND_EFFECT_DESCRIPTOR_TINT_COLOR_FILTER = Integer.parseInt("1");
@@ -823,6 +833,11 @@ public interface JBRSkia {
      * Effect descriptor type: Skia RuntimeEffect color filter with inline SKSL and uniform payload.
      */
     int COMMAND_EFFECT_DESCRIPTOR_RUNTIME_COLOR_FILTER = Integer.parseInt("8");
+
+    /**
+     * Effect descriptor type: a corner path effect with one float payload, radius.
+     */
+    int COMMAND_EFFECT_DESCRIPTOR_CORNER_PATH_EFFECT = Integer.parseInt("9");
 
     /**
      * Effect descriptor schema version 1.
