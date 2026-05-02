@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("99");
+    int ABI_ID = Integer.parseInt("100");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -484,6 +484,8 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_DRAW_SHADOW_PATH = Long.parseLong("1024");
     /** Supports shader descriptors that apply typed color-filter descriptor handles. */
     long COMMAND_CAP64_HIGH_SHADER_DESCRIPTOR_COLOR_FILTER = Long.parseLong("2048");
+    /** Supports drawPoints(PointMode.Points)-style stroked point clouds with cap metadata. */
+    long COMMAND_CAP64_HIGH_DRAW_POINTS = Long.parseLong("4096");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -816,6 +818,11 @@ public interface JBRSkia {
      * Draw Skia shadow geometry for an arbitrary path.
      */
     int COMMAND_DRAW_SHADOW_PATH = Integer.parseInt("64");
+
+    /**
+     * Draw stroked points using Skia point-mode semantics.
+     */
+    int COMMAND_DRAW_POINTS = Integer.parseInt("65");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1434,6 +1441,9 @@ public interface JBRSkia {
          *     fontFamilyCharCount, familyCodeUnit0, ..., textAlign, textDirection, lineHeightMultiplier1000, maxLines, ellipsisMode,
          *     decorationMask, letterSpacing1000, backgroundSpecified, backgroundArgb, charCount,
          *     codeUnit0, ...]}</li>
+         *     <li>{@link JBRSkia#COMMAND_DRAW_POINTS}: {@code [op, 36 + pointCount * 8, flags,
+         *     argb, strokeWidth, strokeCap, strokeJoin, strokeMiter1000, pointCount, x0, y0, ...]},
+         *     with {@code pointCount} in [1, 4096] and Skia point-mode stroke/cap semantics.</li>
          * </ul>
          *
          * @param width user-space width of the component being painted.
