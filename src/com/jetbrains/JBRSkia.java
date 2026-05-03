@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("104");
+    int ABI_ID = Integer.parseInt("105");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -496,6 +496,9 @@ public interface JBRSkia {
      */
     long COMMAND_CAP64_HIGH_SHADER_DESCRIPTOR_COLOR = Long.parseLong("32768");
 
+    /** Supports JBR-owned Perlin/noise shader descriptors for fractal noise and turbulence. */
+    long COMMAND_CAP64_HIGH_SHADER_DESCRIPTOR_PERLIN_NOISE = Long.parseLong("65536");
+
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
@@ -936,6 +939,9 @@ public interface JBRSkia {
      * Shader descriptor type for a solid ARGB color shader.
      */
     int COMMAND_SHADER_DESCRIPTOR_COLOR = Integer.parseInt("9");
+
+    /** Shader descriptor type for JBR-owned Perlin/noise shaders. */
+    int COMMAND_SHADER_DESCRIPTOR_PERLIN_NOISE = Integer.parseInt("10");
 
     /**
      * Shader descriptor schema version 1.
@@ -1434,6 +1440,10 @@ public interface JBRSkia {
          *     descriptorVersion, payloadIntCount, payload0, ...]}, defining a shader descriptor in
          *     the current destination context. Version 1 color shader descriptors use
          *     {@code descriptorType = COMMAND_SHADER_DESCRIPTOR_COLOR} and payload {@code [argb]}.
+         *     Version 1 Perlin/noise shader descriptors use
+         *     {@code descriptorType = COMMAND_SHADER_DESCRIPTOR_PERLIN_NOISE} and payload
+         *     {@code [kind, baseFrequencyX1000000, baseFrequencyY1000000, numOctaves, seed1000,
+         *     tileWidth, tileHeight]}, where {@code kind} is 0 for fractal noise and 1 for turbulence.
          *     Version 1 transform shader descriptors use
          *     {@code descriptorType = COMMAND_SHADER_DESCRIPTOR_TRANSFORM} and payload
          *     {@code [childHandleHigh, childHandleLow, m00, m01, m02, m10, m11, m12, m20, m21, m22]},
