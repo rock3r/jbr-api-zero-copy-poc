@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("103");
+    int ABI_ID = Integer.parseInt("104");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -492,6 +492,11 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_DEFINE_FONT_DATA = Long.parseLong("16384");
 
     /**
+     * High-word capability for solid color shader descriptors.
+     */
+    long COMMAND_CAP64_HIGH_SHADER_DESCRIPTOR_COLOR = Long.parseLong("32768");
+
+    /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
     int COMMAND_CLEAR = Integer.parseInt("1");
@@ -926,6 +931,11 @@ public interface JBRSkia {
     int COMMAND_SHADER_DESCRIPTOR_COLOR_FILTER = Integer.parseInt("7");
     /** Shader descriptor type whose payload is child shader-handle high/low followed by a 3x3 fixed1000 matrix. */
     int COMMAND_SHADER_DESCRIPTOR_TRANSFORM = Integer.parseInt("8");
+
+    /**
+     * Shader descriptor type for a solid ARGB color shader.
+     */
+    int COMMAND_SHADER_DESCRIPTOR_COLOR = Integer.parseInt("9");
 
     /**
      * Shader descriptor schema version 1.
@@ -1422,7 +1432,9 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_DEFINE_SHADER_DESCRIPTOR}: {@code [op,
          *     32 + payloadIntCount * 4, 0, handleHigh, handleLow, descriptorType,
          *     descriptorVersion, payloadIntCount, payload0, ...]}, defining a shader descriptor in
-         *     the current destination context. Version 1 transform shader descriptors use
+         *     the current destination context. Version 1 color shader descriptors use
+         *     {@code descriptorType = COMMAND_SHADER_DESCRIPTOR_COLOR} and payload {@code [argb]}.
+         *     Version 1 transform shader descriptors use
          *     {@code descriptorType = COMMAND_SHADER_DESCRIPTOR_TRANSFORM} and payload
          *     {@code [childHandleHigh, childHandleLow, m00, m01, m02, m10, m11, m12, m20, m21, m22]},
          *     where matrix entries are fixed-point values scaled by 1000.</li>
