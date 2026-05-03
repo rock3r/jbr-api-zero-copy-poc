@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("102");
+    int ABI_ID = Integer.parseInt("103");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -488,6 +488,8 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_DRAW_POINTS = Long.parseLong("4096");
     /** Supports shader descriptors that wrap child shader handles in a local transform matrix. */
     long COMMAND_CAP64_HIGH_SHADER_DESCRIPTOR_TRANSFORM = Long.parseLong("8192");
+    /** Supports JBR-owned font-data descriptors for simple native text replay. */
+    long COMMAND_CAP64_HIGH_DEFINE_FONT_DATA = Long.parseLong("16384");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -825,6 +827,11 @@ public interface JBRSkia {
      * Draw stroked points using Skia point-mode semantics.
      */
     int COMMAND_DRAW_POINTS = Integer.parseInt("65");
+
+    /**
+     * Define a JBR-owned font-data descriptor for later simple native text commands.
+     */
+    int COMMAND_DEFINE_FONT_DATA = Integer.parseInt("66");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1441,6 +1448,9 @@ public interface JBRSkia {
          *     left1000, top1000, right1000, bottom1000, cacheKeyHigh, cacheKeyLow, imageWidth,
          *     imageHeight, tileModeX, tileModeY, alpha1000]}, where the image must already be defined
          *     through {@link JBRSkia#COMMAND_DEFINE_IMAGE_ARGB} in the current destination context.</li>
+         *     <li>{@link JBRSkia#COMMAND_DEFINE_FONT_DATA}: {@code [op, 24 + byteCount * 4, 0,
+         *     handleHigh, handleLow, byteCount, byte0, ...]}, defining one JBR-owned font-data handle
+         *     for simple native text commands. Each byte payload word must be in {@code 0..255}.</li>
          *     <li>{@link JBRSkia#COMMAND_DRAW_TEXT_UTF16}: {@code [op, 48 + (fontFamilyCharCount + charCount) * 4, flags,
          *     x1000, baseline1000, fontSize1000, argb, fontWeight, fontWidth, fontSlant,
      *     fontFamilyCharCount, familyCodeUnit0, ...,
