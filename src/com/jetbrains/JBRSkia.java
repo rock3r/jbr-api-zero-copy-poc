@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("101");
+    int ABI_ID = Integer.parseInt("102");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -486,6 +486,8 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_SHADER_DESCRIPTOR_COLOR_FILTER = Long.parseLong("2048");
     /** Supports drawPoints(PointMode.Points)-style stroked point clouds with cap metadata. */
     long COMMAND_CAP64_HIGH_DRAW_POINTS = Long.parseLong("4096");
+    /** Supports shader descriptors that wrap child shader handles in a local transform matrix. */
+    long COMMAND_CAP64_HIGH_SHADER_DESCRIPTOR_TRANSFORM = Long.parseLong("8192");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -915,6 +917,8 @@ public interface JBRSkia {
     int COMMAND_SHADER_DESCRIPTOR_RUNTIME_EFFECT = Integer.parseInt("6");
     /** Shader descriptor type whose payload is shader-handle high/low and color-filter-handle high/low. */
     int COMMAND_SHADER_DESCRIPTOR_COLOR_FILTER = Integer.parseInt("7");
+    /** Shader descriptor type whose payload is child shader-handle high/low followed by a 3x3 fixed1000 matrix. */
+    int COMMAND_SHADER_DESCRIPTOR_TRANSFORM = Integer.parseInt("8");
 
     /**
      * Shader descriptor schema version 1.
@@ -1408,6 +1412,13 @@ public interface JBRSkia {
          *     namedChildCount, sourceHashHigh, sourceHashLow, childHandleHigh, childHandleLow, ...,
          *     uniformOffset, uniformFloatCount, uniformNameLength, uniformNameChar0, ...,
          *     childIndex, childNameLength, childNameChar0, ..., skslChar0, ..., uniformRawBits0, ...]}.</li>
+         *     <li>{@link JBRSkia#COMMAND_DEFINE_SHADER_DESCRIPTOR}: {@code [op,
+         *     32 + payloadIntCount * 4, 0, handleHigh, handleLow, descriptorType,
+         *     descriptorVersion, payloadIntCount, payload0, ...]}, defining a shader descriptor in
+         *     the current destination context. Version 1 transform shader descriptors use
+         *     {@code descriptorType = COMMAND_SHADER_DESCRIPTOR_TRANSFORM} and payload
+         *     {@code [childHandleHigh, childHandleLow, m00, m01, m02, m10, m11, m12, m20, m21, m22]},
+         *     where matrix entries are fixed-point values scaled by 1000.</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT_COLOR_FILTER_REF}: {@code [op, 40, flags,
          *     argb, handleHigh, handleLow, x, y, width, height]}, where the handle must be defined
          *     earlier in the same command frame or already cached for the current destination context.</li>
