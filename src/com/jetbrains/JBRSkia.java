@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("105");
+    int ABI_ID = Integer.parseInt("106");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -499,6 +499,9 @@ public interface JBRSkia {
     /** Supports JBR-owned Perlin/noise shader descriptors for fractal noise and turbulence. */
     long COMMAND_CAP64_HIGH_SHADER_DESCRIPTOR_PERLIN_NOISE = Long.parseLong("65536");
 
+    /** Supports serialized Canvas.drawVertices payloads with positions, texture coordinates, colors, and indices. */
+    long COMMAND_CAP64_HIGH_DRAW_VERTICES = Long.parseLong("131072");
+
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
@@ -840,6 +843,11 @@ public interface JBRSkia {
      * Define a JBR-owned font-data descriptor for later simple native text commands.
      */
     int COMMAND_DEFINE_FONT_DATA = Integer.parseInt("66");
+
+    /**
+     * Draw serialized vertices using Skia vertex-mode semantics.
+     */
+    int COMMAND_DRAW_VERTICES = Integer.parseInt("67");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1488,6 +1496,11 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_DRAW_POINTS}: {@code [op, 36 + pointCount * 8, flags,
          *     argb, strokeWidth, strokeCap, strokeJoin, strokeMiter1000, pointCount, x0, y0, ...]},
          *     with {@code pointCount} in [1, 4096] and Skia point-mode stroke/cap semantics.</li>
+         *     <li>{@link JBRSkia#COMMAND_DRAW_VERTICES}: {@code [op, 32 + vertexCount * 20 + indexCount * 4, flags,
+         *     vertexMode, blendMode, paintArgb, vertexCount, indexCount,
+         *     x0, y0, ..., texX0Bits, texY0Bits, ..., color0, ..., index0, ...]},
+         *     with {@code vertexCount} in [3, 4096], {@code indexCount} in [0, 8192], and texture
+         *     coordinates encoded as raw IEEE-754 float bits.</li>
          * </ul>
          *
          * @param width user-space width of the component being painted.
