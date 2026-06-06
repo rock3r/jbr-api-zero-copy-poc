@@ -100,19 +100,16 @@ Clients must read `JBRSkia.ABI_ID` and `JBRSkia.BUILD_ID` reflectively before
 acquiring `JBR.getJBRSkia()`. If either value is incompatible, or if the service
 is unavailable, clients must fall back to their existing rendering path.
 
-Current PoC command ABI is 83. In addition to typed effect descriptors for
-tint, color-matrix, and lighting color filters, this ABI exposes
-`COMMAND_SAVE_LAYER_COLOR_FILTER_REF`, which lets a saveLayer paint reference a
-previously defined descriptor handle without sharing raw Skia pointers, and
-`COMMAND_DRAW_IMAGE_REF_COLOR_FILTER_REF`, which applies descriptor-backed color
-filters to cached image draws. It also exposes
-`COMMAND_SAVE_LAYER_BLEND_COLOR_FILTER_REF` for descriptor-backed layer color
-filters combined with direct Skia blend modes. ABI 81 adds
-`getCommandCapabilities64High()` as an empty second capability word so future
-commands can negotiate support without overloading the already-full low word.
-ABI 82 uses that high word for `COMMAND_SAVE_LAYER_IMAGE_FILTER_REF` and
-`COMMAND_EFFECT_DESCRIPTOR_BLUR_IMAGE_FILTER`, the first JBR-owned image-filter
-descriptor used by graphics-layer `BlurEffect` command replay. ABI 83 adds
-`COMMAND_EFFECT_DESCRIPTOR_OFFSET_IMAGE_FILTER` for simple graphics-layer
-`OffsetEffect` command replay. ABI 84 adds child-input descriptor variants for
-chained image filters such as `OffsetEffect(BlurEffect(...), ...)`.
+Current PoC command ABI is 106 and current native ABI is 3. The command stream
+supports primitives, transforms, clipping, cached images, native text/font-data,
+gradient and image shader descriptors, RuntimeEffect shaders and color filters,
+image filters, path effects, blend modes, shadows, vertices, draw-points, and
+graphics-layer variants. It exposes both low and high 64-bit command capability
+masks; clients must require every command, descriptor, and lifecycle bit they
+intend to emit before using command replay.
+
+The ABI deliberately uses JBR-owned image, shader, effect, font-data, and
+color-filter handles or serialized descriptors. Raw Skiko-owned native pointers
+must not cross this API; clients should fall back to their old rendering path
+when a scene depends on an unsupported/raw Skia family or when any ABI,
+build-id, native-ABI, capability, or public-API check fails.
