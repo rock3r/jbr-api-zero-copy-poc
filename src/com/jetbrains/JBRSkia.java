@@ -511,6 +511,12 @@ public interface JBRSkia {
     /** Supports stroked arbitrary paths with serialized sweep-gradient paint. */
     long COMMAND_CAP64_HIGH_STROKE_PATH_SWEEP_GRADIENT = Long.parseLong("1048576");
 
+    /** Supports stroked rectangles with shader descriptor handles. */
+    long COMMAND_CAP64_HIGH_STROKE_RECT_SHADER_REF = Long.parseLong("2097152");
+
+    /** Supports stroked rectangles with JBR-owned image shaders. */
+    long COMMAND_CAP64_HIGH_STROKE_RECT_IMAGE_SHADER = Long.parseLong("4194304");
+
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
@@ -872,6 +878,16 @@ public interface JBRSkia {
      * Stroke an arbitrary path with serialized sweep-gradient paint.
      */
     int COMMAND_STROKE_PATH_SWEEP_GRADIENT = Integer.parseInt("70");
+
+    /**
+     * Stroke a rectangle with a previously defined shader descriptor handle.
+     */
+    int COMMAND_STROKE_RECT_SHADER_REF = Integer.parseInt("71");
+
+    /**
+     * Stroke a rectangle with a JBR-owned image shader.
+     */
+    int COMMAND_STROKE_RECT_IMAGE_SHADER = Integer.parseInt("72");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1520,6 +1536,15 @@ public interface JBRSkia {
          *     left1000, top1000, right1000, bottom1000, cacheKeyHigh, cacheKeyLow, imageWidth,
          *     imageHeight, tileModeX, tileModeY, alpha1000]}, where the image must already be defined
          *     through {@link JBRSkia#COMMAND_DEFINE_IMAGE_ARGB} in the current destination context.</li>
+         *     <li>{@link JBRSkia#COMMAND_STROKE_RECT_SHADER_REF}: {@code [op, 56, flags,
+         *     handleHigh, handleLow, left1000, top1000, right1000, bottom1000, strokeWidth1000,
+         *     strokeCap, strokeJoin, strokeMiter1000, alpha1000]}, where the shader descriptor handle must
+         *     be defined earlier in the same command frame or already cached for the current destination context.</li>
+         *     <li>{@link JBRSkia#COMMAND_STROKE_RECT_IMAGE_SHADER}: {@code [op, 72, flags,
+         *     left1000, top1000, right1000, bottom1000, cacheKeyHigh, cacheKeyLow, imageWidth, imageHeight,
+         *     tileModeX, tileModeY, alpha1000, strokeWidth1000, strokeCap, strokeJoin, strokeMiter1000]},
+         *     where the image must already be defined through {@link JBRSkia#COMMAND_DEFINE_IMAGE_ARGB}
+         *     in the current destination context.</li>
          *     <li>{@link JBRSkia#COMMAND_DEFINE_FONT_DATA}: {@code [op, 24 + byteCount * 4, 0,
          *     handleHigh, handleLow, byteCount, byte0, ...]}, defining one JBR-owned font-data handle
          *     for simple native text commands. Each byte payload word must be in {@code 0..255}.</li>
