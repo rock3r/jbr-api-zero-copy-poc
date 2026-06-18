@@ -502,6 +502,15 @@ public interface JBRSkia {
     /** Supports serialized Canvas.drawVertices payloads with positions, texture coordinates, colors, and indices. */
     long COMMAND_CAP64_HIGH_DRAW_VERTICES = Long.parseLong("131072");
 
+    /** Supports stroked arbitrary paths with serialized linear-gradient paint. */
+    long COMMAND_CAP64_HIGH_STROKE_PATH_LINEAR_GRADIENT = Long.parseLong("262144");
+
+    /** Supports stroked arbitrary paths with serialized radial-gradient paint. */
+    long COMMAND_CAP64_HIGH_STROKE_PATH_RADIAL_GRADIENT = Long.parseLong("524288");
+
+    /** Supports stroked arbitrary paths with serialized sweep-gradient paint. */
+    long COMMAND_CAP64_HIGH_STROKE_PATH_SWEEP_GRADIENT = Long.parseLong("1048576");
+
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
      */
@@ -848,6 +857,21 @@ public interface JBRSkia {
      * Draw serialized vertices using Skia vertex-mode semantics.
      */
     int COMMAND_DRAW_VERTICES = Integer.parseInt("67");
+
+    /**
+     * Stroke an arbitrary path with serialized linear-gradient paint.
+     */
+    int COMMAND_STROKE_PATH_LINEAR_GRADIENT = Integer.parseInt("68");
+
+    /**
+     * Stroke an arbitrary path with serialized radial-gradient paint.
+     */
+    int COMMAND_STROKE_PATH_RADIAL_GRADIENT = Integer.parseInt("69");
+
+    /**
+     * Stroke an arbitrary path with serialized sweep-gradient paint.
+     */
+    int COMMAND_STROKE_PATH_SWEEP_GRADIENT = Integer.parseInt("70");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1362,6 +1386,24 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_FILL_PATH_SWEEP_GRADIENT}: {@code [op, 20 + pathDataLength * 4
          *     + colorCount * 8, flags, fillType, pathDataLength, pathVerb0, ..., centerX1000, centerY1000,
          *     colorCount, argb0, stop1000_0, ...]}, where path data is a sequence of
+         *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000, with 2..16
+         *     colors and stops in [0, 1000].</li>
+         *     <li>{@link JBRSkia#COMMAND_STROKE_PATH_LINEAR_GRADIENT}: {@code [op, 60 + pathDataLength * 4
+         *     + colorCount * 8, flags, strokeWidth1000, strokeCap, strokeJoin, strokeMiter1000,
+         *     fillType, pathDataLength, pathVerb0, ..., fromX1000, fromY1000, toX1000, toY1000,
+         *     tileMode, colorCount, argb0, stop1000_0, ...]}, where path data is a sequence of
+         *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000, with 2..16
+         *     colors and stops in [0, 1000].</li>
+         *     <li>{@link JBRSkia#COMMAND_STROKE_PATH_RADIAL_GRADIENT}: {@code [op, 56 + pathDataLength * 4
+         *     + colorCount * 8, flags, strokeWidth1000, strokeCap, strokeJoin, strokeMiter1000,
+         *     fillType, pathDataLength, pathVerb0, ..., centerX1000, centerY1000, radius1000,
+         *     tileMode, colorCount, argb0, stop1000_0, ...]}, where path data is a sequence of
+         *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000, with 2..16
+         *     colors and stops in [0, 1000].</li>
+         *     <li>{@link JBRSkia#COMMAND_STROKE_PATH_SWEEP_GRADIENT}: {@code [op, 48 + pathDataLength * 4
+         *     + colorCount * 8, flags, strokeWidth1000, strokeCap, strokeJoin, strokeMiter1000,
+         *     fillType, pathDataLength, pathVerb0, ..., centerX1000, centerY1000, colorCount,
+         *     argb0, stop1000_0, ...]}, where path data is a sequence of
          *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000, with 2..16
          *     colors and stops in [0, 1000].</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT_BLEND_MODE}: {@code [op, 36, flags, argb, blendMode,
