@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("107");
+    int ABI_ID = Integer.parseInt("108");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -518,6 +518,8 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_STROKE_RECT_IMAGE_SHADER = Long.parseLong("4194304");
     /** Supports compact save plus translate records. */
     long COMMAND_CAP64_HIGH_SAVE_TRANSLATE = Long.parseLong("8388608");
+    /** Supports compact repeated restore records. */
+    long COMMAND_CAP64_HIGH_RESTORE_N = Long.parseLong("16777216");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -895,6 +897,10 @@ public interface JBRSkia {
      * Command-list operation: save canvas state and translate the current canvas transform.
      */
     int COMMAND_SAVE_TRANSLATE = Integer.parseInt("74");
+    /**
+     * Command-list operation: restore canvas state repeatedly.
+     */
+    int COMMAND_RESTORE_N = Integer.parseInt("75");
 
     /**
      * Effect descriptor type: tint color filter.
