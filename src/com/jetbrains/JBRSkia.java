@@ -34,7 +34,7 @@ public interface JBRSkia {
      * Java-level shape of the interop ABI. This field intentionally uses a non-constant initializer so
      * compile-only clients cannot accidentally inline stale values.
      */
-    int ABI_ID = Integer.parseInt("110");
+    int ABI_ID = Integer.parseInt("111");
 
     /**
      * Java-visible version of the native interop metadata block. Bump when the native service
@@ -524,6 +524,8 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_SAVE_TRANSLATE_LAYER = Long.parseLong("33554432");
     /** Supports compact full-source image reference draw records with default alpha. */
     long COMMAND_CAP64_HIGH_DRAW_IMAGE_REF_FULL = Long.parseLong("67108864");
+    /** Supports compact filled round-rectangle records. */
+    long COMMAND_CAP64_HIGH_FILL_ROUND_RECT = Long.parseLong("134217728");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -913,6 +915,10 @@ public interface JBRSkia {
      * Command-list operation: draw a full-source image reference with default alpha.
      */
     int COMMAND_DRAW_IMAGE_REF_FULL = Integer.parseInt("77");
+    /**
+     * Command-list operation: fill a rounded rectangle with one ARGB color.
+     */
+    int COMMAND_FILL_ROUND_RECT = Integer.parseInt("78");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1368,6 +1374,8 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_DRAW_ROUND_RECT}: {@code [op, 60, flags, paintStyle, argb,
          *     left1000, top1000, right1000, bottom1000, radiusX1000, radiusY1000,
          *     strokeWidth, strokeCap, strokeJoin, strokeMiter1000]}, where stroke fields are ignored for fill style.</li>
+         *     <li>{@link JBRSkia#COMMAND_FILL_ROUND_RECT}: {@code [op, 40, flags, argb,
+         *     left1000, top1000, right1000, bottom1000, radiusX1000, radiusY1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT_LINEAR_GRADIENT}: {@code [op, 52 + colorCount * 8, flags,
          *     left1000, top1000, right1000, bottom1000, fromX1000, fromY1000, toX1000, toY1000,
          *     tileMode, colorCount, argb0, stop1000_0, ...]}, with 2..16 colors and stops in [0, 1000].</li>
