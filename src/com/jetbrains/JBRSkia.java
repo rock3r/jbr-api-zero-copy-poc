@@ -540,6 +540,8 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_DRAW_IMAGE_REF_FULL_RESTORE = Long.parseLong("34359738368");
     /** Supports compact full-source image reference draw plus restoreN records. */
     long COMMAND_CAP64_HIGH_DRAW_IMAGE_REF_FULL_RESTORE_N = Long.parseLong("68719476736");
+    /** Supports compact round-rectangle draw plus restoreN records. */
+    long COMMAND_CAP64_HIGH_DRAW_ROUND_RECT_RESTORE_N = Long.parseLong("137438953472");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -961,6 +963,10 @@ public interface JBRSkia {
      * Command-list operation: draw a full-source image reference, then restore multiple saves.
      */
     int COMMAND_DRAW_IMAGE_REF_FULL_RESTORE_N = Integer.parseInt("87");
+    /**
+     * Command-list operation: draw a solid round rectangle, then restore multiple saves.
+     */
+    int COMMAND_DRAW_ROUND_RECT_RESTORE_N = Integer.parseInt("88");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1421,6 +1427,9 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_DRAW_IMAGE_REF_FULL_RESTORE_N}: {@code [op, 40, imageFlags,
          *     dstLeft1000, dstTop1000, dstRight1000, dstBottom1000, cacheKeyHigh, cacheKeyLow,
          *     extraRestoreCount]}</li>
+         *     <li>{@link JBRSkia#COMMAND_DRAW_ROUND_RECT_RESTORE_N}: {@code [op, 64, flags, paintStyle, argb,
+         *     left1000, top1000, right1000, bottom1000, radiusX1000, radiusY1000, strokeWidth, strokeCap,
+         *     strokeJoin, strokeMiter1000, restoreCount]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLIP_PATH}: {@code [op, 24 + pathDataLength * 4, flags,
          *     clipOp, fillType, pathDataLength, pathVerb0, ...]}, where path data is a sequence of
          *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000.</li>
