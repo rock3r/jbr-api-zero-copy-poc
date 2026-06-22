@@ -544,6 +544,9 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_DRAW_ROUND_RECT_RESTORE_N = Long.parseLong("137438953472");
     /** Supports compact stroke-line plus full-source image reference run plus restoreN records. */
     long COMMAND_CAP64_HIGH_STROKE_LINE_DRAW_IMAGE_REF_FULL_RUN_RESTORE_N = Long.parseLong("274877906944");
+    /** Supports compact full-source image restoreN plus translated-layer/nested translated-save records. */
+    long COMMAND_CAP64_HIGH_DRAW_IMAGE_REF_FULL_RESTORE_N_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE =
+            Long.parseLong("549755813888");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -973,6 +976,11 @@ public interface JBRSkia {
      * Command-list operation: stroke a line, draw a run of full-source image references, then restore multiple saves.
      */
     int COMMAND_STROKE_LINE_DRAW_IMAGE_REF_FULL_RUN_RESTORE_N = Integer.parseInt("89");
+    /**
+     * Command-list operation: draw a full-source image reference, restore multiple saves, then create a translated
+     * layer and nested translated save.
+     */
+    int COMMAND_DRAW_IMAGE_REF_FULL_RESTORE_N_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE = Integer.parseInt("90");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1440,6 +1448,10 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_DRAW_ROUND_RECT_RESTORE_N}: {@code [op, 64, flags, paintStyle, argb,
          *     left1000, top1000, right1000, bottom1000, radiusX1000, radiusY1000, strokeWidth, strokeCap,
          *     strokeJoin, strokeMiter1000, restoreCount]}</li>
+         *     <li>{@link JBRSkia#COMMAND_DRAW_IMAGE_REF_FULL_RESTORE_N_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE}:
+         *     {@code [op, 76, imageFlags, dstLeft1000, dstTop1000, dstRight1000, dstBottom1000, cacheKeyHigh,
+         *     cacheKeyLow, extraRestoreCount, layerDx1000, layerDy1000, layerX, layerY, layerWidth, layerHeight,
+         *     alpha1000, nestedDx1000, nestedDy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLIP_PATH}: {@code [op, 24 + pathDataLength * 4, flags,
          *     clipOp, fillType, pathDataLength, pathVerb0, ...]}, where path data is a sequence of
          *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000.</li>
