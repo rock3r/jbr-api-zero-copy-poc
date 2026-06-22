@@ -553,6 +553,8 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_SAVE_FILL_RECT_SAVE = Long.parseLong("2199023255552");
     /** Supports compact saveLayer plus save plus translate records. */
     long COMMAND_CAP64_HIGH_SAVE_LAYER_SAVE_TRANSLATE = Long.parseLong("4398046511104");
+    /** Supports compact save plus saveLayer plus save plus translate records. */
+    long COMMAND_CAP64_HIGH_SAVE_SAVE_LAYER_SAVE_TRANSLATE = Long.parseLong("8796093022208");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -999,6 +1001,10 @@ public interface JBRSkia {
      * Command-list operation: save an alpha layer, then save and translate the canvas state.
      */
     int COMMAND_SAVE_LAYER_SAVE_TRANSLATE = Integer.parseInt("93");
+    /**
+     * Command-list operation: save the canvas state, save an alpha layer, then save and translate the canvas state.
+     */
+    int COMMAND_SAVE_SAVE_LAYER_SAVE_TRANSLATE = Integer.parseInt("94");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1464,6 +1470,8 @@ public interface JBRSkia {
          *     nestedDx1000, nestedDy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SAVE_LAYER_SAVE_TRANSLATE}: {@code [op, 40, 0,
          *     layerX, layerY, layerWidth, layerHeight, alpha1000, dx1000, dy1000]}</li>
+         *     <li>{@link JBRSkia#COMMAND_SAVE_SAVE_LAYER_SAVE_TRANSLATE}: {@code [op, 40, 0,
+         *     layerX, layerY, layerWidth, layerHeight, alpha1000, dx1000, dy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_DRAW_IMAGE_REF_FULL_RESTORE}: {@code [op, 36, imageFlags,
          *     dstLeft1000, dstTop1000, dstRight1000, dstBottom1000, cacheKeyHigh, cacheKeyLow]}</li>
          *     <li>{@link JBRSkia#COMMAND_DRAW_IMAGE_REF_FULL_RESTORE_N}: {@code [op, 40, imageFlags,
@@ -1598,6 +1606,8 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_ROTATE}: {@code [op, 16, 0, degrees1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SAVE_LAYER}: {@code [op, 32, 0, x, y, width, height, alpha1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SAVE_LAYER_SAVE_TRANSLATE}: {@code [op, 40, 0,
+         *     x, y, width, height, alpha1000, dx1000, dy1000]}</li>
+         *     <li>{@link JBRSkia#COMMAND_SAVE_SAVE_LAYER_SAVE_TRANSLATE}: {@code [op, 40, 0,
          *     x, y, width, height, alpha1000, dx1000, dy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SAVE_LAYER_BLEND_MODE}: {@code [op, 36, 0,
          *     x, y, width, height, alpha1000, blendMode]}, with {@code blendMode} limited to the same
