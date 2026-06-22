@@ -536,6 +536,8 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_STROKE_LINE_DRAW_IMAGE_REF_FULL_RUN = Long.parseLong("8589934592");
     /** Supports compact translated-layer plus nested translated-save records. */
     long COMMAND_CAP64_HIGH_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE = Long.parseLong("17179869184");
+    /** Supports compact full-source image reference draw plus restore records. */
+    long COMMAND_CAP64_HIGH_DRAW_IMAGE_REF_FULL_RESTORE = Long.parseLong("34359738368");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -949,6 +951,10 @@ public interface JBRSkia {
      * Command-list operation: create a translated layer, then create a nested translated save.
      */
     int COMMAND_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE = Integer.parseInt("85");
+    /**
+     * Command-list operation: draw a full-source image reference, then restore one save.
+     */
+    int COMMAND_DRAW_IMAGE_REF_FULL_RESTORE = Integer.parseInt("86");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1404,6 +1410,8 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE}: {@code [op, 48, 0,
          *     layerDx1000, layerDy1000, layerX, layerY, layerWidth, layerHeight, alpha1000,
          *     nestedDx1000, nestedDy1000]}</li>
+         *     <li>{@link JBRSkia#COMMAND_DRAW_IMAGE_REF_FULL_RESTORE}: {@code [op, 36, imageFlags,
+         *     dstLeft1000, dstTop1000, dstRight1000, dstBottom1000, cacheKeyHigh, cacheKeyLow]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLIP_PATH}: {@code [op, 24 + pathDataLength * 4, flags,
          *     clipOp, fillType, pathDataLength, pathVerb0, ...]}, where path data is a sequence of
          *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000.</li>
