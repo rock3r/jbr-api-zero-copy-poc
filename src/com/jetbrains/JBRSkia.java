@@ -547,6 +547,8 @@ public interface JBRSkia {
     /** Supports compact full-source image restoreN plus translated-layer/nested translated-save records. */
     long COMMAND_CAP64_HIGH_DRAW_IMAGE_REF_FULL_RESTORE_N_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE =
             Long.parseLong("549755813888");
+    /** Supports compact fill-rect plus save records. */
+    long COMMAND_CAP64_HIGH_FILL_RECT_SAVE = Long.parseLong("1099511627776");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -981,6 +983,10 @@ public interface JBRSkia {
      * layer and nested translated save.
      */
     int COMMAND_DRAW_IMAGE_REF_FULL_RESTORE_N_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE = Integer.parseInt("90");
+    /**
+     * Command-list operation: fill a rectangle, then save the canvas state.
+     */
+    int COMMAND_FILL_RECT_SAVE = Integer.parseInt("91");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1417,6 +1423,8 @@ public interface JBRSkia {
          * <ul>
          *     <li>{@link JBRSkia#COMMAND_CLEAR}: {@code [op, 16, 0, argb]}</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT}: {@code [op, 36, 0, argb, x, y, width, height, radius]}</li>
+         *     <li>{@link JBRSkia#COMMAND_FILL_RECT_SAVE}: {@code [op, 36, flags, argb, x, y, width, height,
+         *     radius]}</li>
          *     <li>{@link JBRSkia#COMMAND_STROKE_LINE}: {@code [op, 48, flags, argb, x1, y1, x2, y2, strokeWidth, strokeCap, strokeJoin, strokeMiter1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_OVAL}: {@code [op, 32, 0, argb, x, y, width, height]}</li>
          *     <li>{@link JBRSkia#COMMAND_STROKE_OVAL}: {@code [op, 48, flags, argb, x, y, width, height, strokeWidth, strokeCap, strokeJoin, strokeMiter1000]}</li>
