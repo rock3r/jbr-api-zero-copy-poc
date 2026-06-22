@@ -555,6 +555,8 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_SAVE_LAYER_SAVE_TRANSLATE = Long.parseLong("4398046511104");
     /** Supports compact save plus saveLayer plus save plus translate records. */
     long COMMAND_CAP64_HIGH_SAVE_SAVE_LAYER_SAVE_TRANSLATE = Long.parseLong("8796093022208");
+    /** Supports compact fill-rect plus saveLayer plus clipRect records. */
+    long COMMAND_CAP64_HIGH_FILL_RECT_SAVE_LAYER_CLIP_RECT = Long.parseLong("17592186044416");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -1005,6 +1007,10 @@ public interface JBRSkia {
      * Command-list operation: save the canvas state, save an alpha layer, then save and translate the canvas state.
      */
     int COMMAND_SAVE_SAVE_LAYER_SAVE_TRANSLATE = Integer.parseInt("94");
+    /**
+     * Command-list operation: fill a rectangle, save an alpha layer, then clip the layer.
+     */
+    int COMMAND_FILL_RECT_SAVE_LAYER_CLIP_RECT = Integer.parseInt("95");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1472,6 +1478,9 @@ public interface JBRSkia {
          *     layerX, layerY, layerWidth, layerHeight, alpha1000, dx1000, dy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SAVE_SAVE_LAYER_SAVE_TRANSLATE}: {@code [op, 40, 0,
          *     layerX, layerY, layerWidth, layerHeight, alpha1000, dx1000, dy1000]}</li>
+         *     <li>{@link JBRSkia#COMMAND_FILL_RECT_SAVE_LAYER_CLIP_RECT}: {@code [op, 80, fillFlags,
+         *     argb, fillX, fillY, fillWidth, fillHeight, radius, clipFlags, layerX, layerY, layerWidth,
+         *     layerHeight, alpha1000, clipX, clipY, clipWidth, clipHeight, clipOp]}</li>
          *     <li>{@link JBRSkia#COMMAND_DRAW_IMAGE_REF_FULL_RESTORE}: {@code [op, 36, imageFlags,
          *     dstLeft1000, dstTop1000, dstRight1000, dstBottom1000, cacheKeyHigh, cacheKeyLow]}</li>
          *     <li>{@link JBRSkia#COMMAND_DRAW_IMAGE_REF_FULL_RESTORE_N}: {@code [op, 40, imageFlags,
@@ -1609,6 +1618,9 @@ public interface JBRSkia {
          *     x, y, width, height, alpha1000, dx1000, dy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SAVE_SAVE_LAYER_SAVE_TRANSLATE}: {@code [op, 40, 0,
          *     x, y, width, height, alpha1000, dx1000, dy1000]}</li>
+         *     <li>{@link JBRSkia#COMMAND_FILL_RECT_SAVE_LAYER_CLIP_RECT}: {@code [op, 80, fillFlags,
+         *     argb, fillX, fillY, fillWidth, fillHeight, radius, clipFlags, layerX, layerY, layerWidth,
+         *     layerHeight, alpha1000, clipX, clipY, clipWidth, clipHeight, clipOp]}</li>
          *     <li>{@link JBRSkia#COMMAND_SAVE_LAYER_BLEND_MODE}: {@code [op, 36, 0,
          *     x, y, width, height, alpha1000, blendMode]}, with {@code blendMode} limited to the same
          *     direct Skia blend-mode values accepted by {@link JBRSkia#COMMAND_FILL_RECT_BLEND_MODE}.</li>
