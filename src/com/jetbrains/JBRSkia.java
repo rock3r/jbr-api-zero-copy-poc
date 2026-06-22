@@ -530,8 +530,6 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_DRAW_IMAGE_REF_FULL_RUN = Long.parseLong("1073741824");
     /** Supports compact saveLayer plus clipRect records. */
     long COMMAND_CAP64_HIGH_SAVE_LAYER_CLIP_RECT = Long.parseLong("2147483648");
-    /** Supports compact full-source image reference draw plus filled rectangle records. */
-    long COMMAND_CAP64_HIGH_DRAW_IMAGE_REF_FULL_FILL_RECT = Long.parseLong("4294967296");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -933,10 +931,6 @@ public interface JBRSkia {
      * Command-list operation: save an alpha layer and immediately clip a rectangle.
      */
     int COMMAND_SAVE_LAYER_CLIP_RECT = Integer.parseInt("82");
-    /**
-     * Command-list operation: draw a full-source image reference, then fill a rectangle.
-     */
-    int COMMAND_DRAW_IMAGE_REF_FULL_FILL_RECT = Integer.parseInt("83");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1382,9 +1376,6 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_CLIP_RECT}: {@code [op, 32, flags, x, y, width, height, clipOp]}</li>
          *     <li>{@link JBRSkia#COMMAND_SAVE_LAYER_CLIP_RECT}: {@code [op, 52, flags,
          *     layerX, layerY, layerWidth, layerHeight, alpha1000, clipX, clipY, clipWidth, clipHeight, clipOp]}</li>
-         *     <li>{@link JBRSkia#COMMAND_DRAW_IMAGE_REF_FULL_FILL_RECT}: {@code [op, 64, fillFlags,
-         *     imageFlags, dstLeft1000, dstTop1000, dstRight1000, dstBottom1000, cacheKeyHigh, cacheKeyLow,
-         *     argb, x, y, width, height, radius]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLIP_PATH}: {@code [op, 24 + pathDataLength * 4, flags,
          *     clipOp, fillType, pathDataLength, pathVerb0, ...]}, where path data is a sequence of
          *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000.</li>
