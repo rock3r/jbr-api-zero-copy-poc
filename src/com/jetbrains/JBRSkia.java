@@ -542,6 +542,8 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_DRAW_IMAGE_REF_FULL_RESTORE_N = Long.parseLong("68719476736");
     /** Supports compact round-rectangle draw plus restoreN records. */
     long COMMAND_CAP64_HIGH_DRAW_ROUND_RECT_RESTORE_N = Long.parseLong("137438953472");
+    /** Supports compact stroke-line plus full-source image reference run plus restoreN records. */
+    long COMMAND_CAP64_HIGH_STROKE_LINE_DRAW_IMAGE_REF_FULL_RUN_RESTORE_N = Long.parseLong("274877906944");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -967,6 +969,10 @@ public interface JBRSkia {
      * Command-list operation: draw a solid round rectangle, then restore multiple saves.
      */
     int COMMAND_DRAW_ROUND_RECT_RESTORE_N = Integer.parseInt("88");
+    /**
+     * Command-list operation: stroke a line, draw a run of full-source image references, then restore multiple saves.
+     */
+    int COMMAND_STROKE_LINE_DRAW_IMAGE_REF_FULL_RUN_RESTORE_N = Integer.parseInt("89");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1419,6 +1425,10 @@ public interface JBRSkia {
          *     56 + imageCount * 24, lineFlags, imageFlags, argb, x1, y1, x2, y2, strokeWidth, strokeCap,
          *     strokeJoin, strokeMiter1000, imageCount, dstLeft1000, dstTop1000, dstRight1000, dstBottom1000,
          *     cacheKeyHigh, cacheKeyLow, ...]}</li>
+         *     <li>{@link JBRSkia#COMMAND_STROKE_LINE_DRAW_IMAGE_REF_FULL_RUN_RESTORE_N}: {@code [op,
+         *     60 + imageCount * 24, lineFlags, imageFlags, argb, x1, y1, x2, y2, strokeWidth, strokeCap,
+         *     strokeJoin, strokeMiter1000, imageCount, dstLeft1000, dstTop1000, dstRight1000, dstBottom1000,
+         *     cacheKeyHigh, cacheKeyLow, ..., restoreCount]}</li>
          *     <li>{@link JBRSkia#COMMAND_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE}: {@code [op, 48, 0,
          *     layerDx1000, layerDy1000, layerX, layerY, layerWidth, layerHeight, alpha1000,
          *     nestedDx1000, nestedDy1000]}</li>
