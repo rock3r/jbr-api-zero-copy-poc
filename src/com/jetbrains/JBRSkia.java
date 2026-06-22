@@ -526,6 +526,8 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_DRAW_IMAGE_REF_FULL = Long.parseLong("67108864");
     /** Supports compact filled round-rectangle records. */
     long COMMAND_CAP64_HIGH_FILL_ROUND_RECT = Long.parseLong("134217728");
+    /** Supports compact runs of full-source image reference draw records. */
+    long COMMAND_CAP64_HIGH_DRAW_IMAGE_REF_FULL_RUN = Long.parseLong("1073741824");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -919,6 +921,10 @@ public interface JBRSkia {
      * Command-list operation: fill a rounded rectangle with one ARGB color.
      */
     int COMMAND_FILL_ROUND_RECT = Integer.parseInt("78");
+    /**
+     * Command-list operation: draw a run of full-source image references with default alpha.
+     */
+    int COMMAND_DRAW_IMAGE_REF_FULL_RUN = Integer.parseInt("81");
 
     /**
      * Effect descriptor type: tint color filter.
