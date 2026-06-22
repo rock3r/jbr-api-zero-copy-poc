@@ -557,6 +557,9 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_SAVE_SAVE_LAYER_SAVE_TRANSLATE = Long.parseLong("8796093022208");
     /** Supports compact fill-rect plus saveLayer plus clipRect records. */
     long COMMAND_CAP64_HIGH_FILL_RECT_SAVE_LAYER_CLIP_RECT = Long.parseLong("17592186044416");
+    /** Supports compact translated-layer/nested translated-save plus full-source image restoreN records. */
+    long COMMAND_CAP64_HIGH_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE_DRAW_IMAGE_REF_FULL_RESTORE_N =
+            Long.parseLong("35184372088832");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -1011,6 +1014,11 @@ public interface JBRSkia {
      * Command-list operation: fill a rectangle, save an alpha layer, then clip the layer.
      */
     int COMMAND_FILL_RECT_SAVE_LAYER_CLIP_RECT = Integer.parseInt("95");
+    /**
+     * Command-list operation: create a translated layer and nested translated save, draw a full-source image reference,
+     * then restore multiple saves.
+     */
+    int COMMAND_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE_DRAW_IMAGE_REF_FULL_RESTORE_N = Integer.parseInt("96");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1493,6 +1501,10 @@ public interface JBRSkia {
          *     {@code [op, 76, imageFlags, dstLeft1000, dstTop1000, dstRight1000, dstBottom1000, cacheKeyHigh,
          *     cacheKeyLow, extraRestoreCount, layerDx1000, layerDy1000, layerX, layerY, layerWidth, layerHeight,
          *     alpha1000, nestedDx1000, nestedDy1000]}</li>
+         *     <li>{@link JBRSkia#COMMAND_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE_DRAW_IMAGE_REF_FULL_RESTORE_N}:
+         *     {@code [op, 76, imageFlags, layerDx1000, layerDy1000, layerX, layerY, layerWidth, layerHeight,
+         *     alpha1000, nestedDx1000, nestedDy1000, dstLeft1000, dstTop1000, dstRight1000, dstBottom1000,
+         *     cacheKeyHigh, cacheKeyLow, extraRestoreCount]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLIP_PATH}: {@code [op, 24 + pathDataLength * 4, flags,
          *     clipOp, fillType, pathDataLength, pathVerb0, ...]}, where path data is a sequence of
          *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000.</li>
