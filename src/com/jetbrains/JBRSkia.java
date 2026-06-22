@@ -532,6 +532,8 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_SAVE_LAYER_CLIP_RECT = Long.parseLong("2147483648");
     /** Supports compact full-source image reference draw plus filled rectangle records. */
     long COMMAND_CAP64_HIGH_DRAW_IMAGE_REF_FULL_FILL_RECT = Long.parseLong("4294967296");
+    /** Supports compact stroke-line plus full-source image reference run records. */
+    long COMMAND_CAP64_HIGH_STROKE_LINE_DRAW_IMAGE_REF_FULL_RUN = Long.parseLong("8589934592");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -937,6 +939,10 @@ public interface JBRSkia {
      * Command-list operation: draw a full-source image reference, then fill a rectangle.
      */
     int COMMAND_DRAW_IMAGE_REF_FULL_FILL_RECT = Integer.parseInt("83");
+    /**
+     * Command-list operation: stroke a line, then draw a run of full-source image references.
+     */
+    int COMMAND_STROKE_LINE_DRAW_IMAGE_REF_FULL_RUN = Integer.parseInt("84");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1385,6 +1391,10 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_DRAW_IMAGE_REF_FULL_FILL_RECT}: {@code [op, 64, fillFlags,
          *     imageFlags, dstLeft1000, dstTop1000, dstRight1000, dstBottom1000, cacheKeyHigh, cacheKeyLow,
          *     argb, x, y, width, height, radius]}</li>
+         *     <li>{@link JBRSkia#COMMAND_STROKE_LINE_DRAW_IMAGE_REF_FULL_RUN}: {@code [op,
+         *     56 + imageCount * 24, lineFlags, imageFlags, argb, x1, y1, x2, y2, strokeWidth, strokeCap,
+         *     strokeJoin, strokeMiter1000, imageCount, dstLeft1000, dstTop1000, dstRight1000, dstBottom1000,
+         *     cacheKeyHigh, cacheKeyLow, ...]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLIP_PATH}: {@code [op, 24 + pathDataLength * 4, flags,
          *     clipOp, fillType, pathDataLength, pathVerb0, ...]}, where path data is a sequence of
          *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000.</li>
