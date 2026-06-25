@@ -568,6 +568,9 @@ public interface JBRSkia {
             Long.parseLong("140737488355328");
     /** Supports compact save plus translate plus rotate records. */
     long COMMAND_CAP64_HIGH_SAVE_TRANSLATE_ROTATE = Long.parseLong("281474976710656");
+    /** Supports compact save plus translate plus rotate plus translate plus fill-oval plus restore records. */
+    long COMMAND_CAP64_HIGH_SAVE_TRANSLATE_ROTATE_TRANSLATE_FILL_OVAL_RESTORE =
+            Long.parseLong("562949953421312");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -1042,6 +1045,10 @@ public interface JBRSkia {
      * Command-list operation: save the canvas state, translate, then rotate.
      */
     int COMMAND_SAVE_TRANSLATE_ROTATE = Integer.parseInt("99");
+    /**
+     * Command-list operation: save the canvas state, translate, rotate, translate, fill an oval, then restore.
+     */
+    int COMMAND_SAVE_TRANSLATE_ROTATE_TRANSLATE_FILL_OVAL_RESTORE = Integer.parseInt("100");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1540,6 +1547,8 @@ public interface JBRSkia {
          *     nextLayerY, nextLayerWidth, nextLayerHeight, nextAlpha1000, dx1000, dy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SAVE_TRANSLATE_ROTATE}: {@code [op, 24, flags, dx1000, dy1000,
          *     degrees1000]}</li>
+         *     <li>{@link JBRSkia#COMMAND_SAVE_TRANSLATE_ROTATE_TRANSLATE_FILL_OVAL_RESTORE}: {@code [op, 52, flags,
+         *     dx1000, dy1000, degrees1000, nestedDx1000, nestedDy1000, argb, x, y, width, height]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLIP_PATH}: {@code [op, 24 + pathDataLength * 4, flags,
          *     clipOp, fillType, pathDataLength, pathVerb0, ...]}, where path data is a sequence of
          *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000.</li>
