@@ -573,6 +573,8 @@ public interface JBRSkia {
             Long.parseLong("562949953421312");
     /** Supports compact stroked closed-polyline path records. */
     long COMMAND_CAP64_HIGH_STROKE_CLOSED_POLYLINE = Long.parseLong("1125899906842624");
+    /** Supports compact stroked closed-polyline path records with packed signed-short deltas. */
+    long COMMAND_CAP64_HIGH_STROKE_CLOSED_POLYLINE_DELTA = Long.parseLong("2251799813685248");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -1055,6 +1057,10 @@ public interface JBRSkia {
      * Command-list operation: stroke a closed polyline path from fixed-point point pairs.
      */
     int COMMAND_STROKE_CLOSED_POLYLINE = Integer.parseInt("101");
+    /**
+     * Command-list operation: stroke a closed polyline path from one fixed-point point plus packed signed-short deltas.
+     */
+    int COMMAND_STROKE_CLOSED_POLYLINE_DELTA = Integer.parseInt("102");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1557,6 +1563,10 @@ public interface JBRSkia {
          *     dx1000, dy1000, degrees1000, nestedDx1000, nestedDy1000, argb, x, y, width, height]}</li>
          *     <li>{@link JBRSkia#COMMAND_STROKE_CLOSED_POLYLINE}: {@code [op, 36 + pointCount * 8, flags, argb,
          *     strokeWidth, strokeCap, strokeJoin, strokeMiter1000, pointCount, x0, y0, ...]}</li>
+         *     <li>{@link JBRSkia#COMMAND_STROKE_CLOSED_POLYLINE_DELTA}: {@code [op, 40 + pointCount * 4, flags, argb,
+         *     strokeWidth, strokeCap, strokeJoin, strokeMiter1000, pointCount, x0, y0, packedDx1Dy1, ...]}, where
+         *     each packed delta stores signed 16-bit fixed1000 {@code dx} in the high half and {@code dy} in the low
+         *     half.</li>
          *     <li>{@link JBRSkia#COMMAND_CLIP_PATH}: {@code [op, 24 + pathDataLength * 4, flags,
          *     clipOp, fillType, pathDataLength, pathVerb0, ...]}, where path data is a sequence of
          *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000.</li>
