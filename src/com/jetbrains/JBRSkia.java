@@ -577,6 +577,9 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_STROKE_CLOSED_POLYLINE_DELTA = Long.parseLong("2251799813685248");
     /** Supports compact adjacent stroked oval records. */
     long COMMAND_CAP64_HIGH_STROKE_OVAL_RUN = Long.parseLong("4503599627370496");
+    /** Supports compact adjacent transformed fill-oval records. */
+    long COMMAND_CAP64_HIGH_SAVE_TRANSLATE_ROTATE_TRANSLATE_FILL_OVAL_RESTORE_RUN =
+            Long.parseLong("18014398509481984");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -1067,6 +1070,10 @@ public interface JBRSkia {
      * Command-list operation: stroke adjacent ovals.
      */
     int COMMAND_STROKE_OVAL_RUN = Integer.parseInt("103");
+    /**
+     * Command-list operation: draw adjacent transformed filled ovals.
+     */
+    int COMMAND_SAVE_TRANSLATE_ROTATE_TRANSLATE_FILL_OVAL_RESTORE_RUN = Integer.parseInt("106");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1567,6 +1574,9 @@ public interface JBRSkia {
          *     degrees1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_SAVE_TRANSLATE_ROTATE_TRANSLATE_FILL_OVAL_RESTORE}: {@code [op, 52, flags,
          *     dx1000, dy1000, degrees1000, nestedDx1000, nestedDy1000, argb, x, y, width, height]}</li>
+         *     <li>{@link JBRSkia#COMMAND_SAVE_TRANSLATE_ROTATE_TRANSLATE_FILL_OVAL_RESTORE_RUN}: {@code [op,
+         *     16 + ovalCount * 40, flags, ovalCount, dx1000_0, dy1000_0, degrees1000_0, nestedDx1000_0,
+         *     nestedDy1000_0, argb0, x0, y0, width0, height0, ...]}</li>
          *     <li>{@link JBRSkia#COMMAND_STROKE_CLOSED_POLYLINE}: {@code [op, 36 + pointCount * 8, flags, argb,
          *     strokeWidth, strokeCap, strokeJoin, strokeMiter1000, pointCount, x0, y0, ...]}</li>
          *     <li>{@link JBRSkia#COMMAND_STROKE_CLOSED_POLYLINE_DELTA}: {@code [op, 40 + pointCount * 4, flags, argb,
