@@ -585,6 +585,9 @@ public interface JBRSkia {
             Long.parseLong("36028797018963968");
     /** Supports compact adjacent fill-rect records. */
     long COMMAND_CAP64_HIGH_FILL_RECT_RUN = Long.parseLong("72057594037927936");
+    /** Supports compact clear-rect plus full-source image draw plus round-rectangle draw records. */
+    long COMMAND_CAP64_HIGH_CLEAR_DRAW_IMAGE_REF_FULL_DRAW_ROUND_RECT =
+            Long.parseLong("144115188075855872");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -1087,6 +1090,10 @@ public interface JBRSkia {
      * Command-list operation: fill adjacent rectangles.
      */
     int COMMAND_FILL_RECT_RUN = Integer.parseInt("108");
+    /**
+     * Command-list operation: clear a rectangle, draw a full-source image reference, then draw a round rectangle.
+     */
+    int COMMAND_CLEAR_DRAW_IMAGE_REF_FULL_DRAW_ROUND_RECT = Integer.parseInt("109");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1604,6 +1611,10 @@ public interface JBRSkia {
          *     argb0, x0, y0, width0, height0, strokeWidth0, strokeCap0, strokeJoin0, strokeMiter1000_0, ...]}</li>
          *     <li>{@link JBRSkia#COMMAND_FILL_RECT_RUN}: {@code [op, 16 + rectCount * 24, flags, rectCount,
          *     argb0, x0, y0, width0, height0, radius0, ...]}</li>
+         *     <li>{@link JBRSkia#COMMAND_CLEAR_DRAW_IMAGE_REF_FULL_DRAW_ROUND_RECT}: {@code [op, 104, flags,
+         *     clearX, clearY, clearWidth, clearHeight, imageFlags, dstLeft1000, dstTop1000, dstRight1000,
+         *     dstBottom1000, cacheKeyHigh, cacheKeyLow, paintStyle, argb, left1000, top1000, right1000, bottom1000,
+         *     radiusX1000, radiusY1000, strokeWidth, strokeCap, strokeJoin, strokeMiter1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLIP_PATH}: {@code [op, 24 + pathDataLength * 4, flags,
          *     clipOp, fillType, pathDataLength, pathVerb0, ...]}, where path data is a sequence of
          *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000.</li>
