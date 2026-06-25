@@ -575,6 +575,8 @@ public interface JBRSkia {
     long COMMAND_CAP64_HIGH_STROKE_CLOSED_POLYLINE = Long.parseLong("1125899906842624");
     /** Supports compact stroked closed-polyline path records with packed signed-short deltas. */
     long COMMAND_CAP64_HIGH_STROKE_CLOSED_POLYLINE_DELTA = Long.parseLong("2251799813685248");
+    /** Supports compact adjacent stroked oval records. */
+    long COMMAND_CAP64_HIGH_STROKE_OVAL_RUN = Long.parseLong("4503599627370496");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -1061,6 +1063,10 @@ public interface JBRSkia {
      * Command-list operation: stroke a closed polyline path from one fixed-point point plus packed signed-short deltas.
      */
     int COMMAND_STROKE_CLOSED_POLYLINE_DELTA = Integer.parseInt("102");
+    /**
+     * Command-list operation: stroke adjacent ovals sharing one solid-color stroke paint.
+     */
+    int COMMAND_STROKE_OVAL_RUN = Integer.parseInt("103");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1567,6 +1573,8 @@ public interface JBRSkia {
          *     strokeWidth, strokeCap, strokeJoin, strokeMiter1000, pointCount, x0, y0, packedDx1Dy1, ...]}, where
          *     each packed delta stores signed 16-bit fixed1000 {@code dx} in the high half and {@code dy} in the low
          *     half.</li>
+         *     <li>{@link JBRSkia#COMMAND_STROKE_OVAL_RUN}: {@code [op, 16 + ovalCount * 36, flags, ovalCount,
+         *     argb0, x0, y0, width0, height0, strokeWidth0, strokeCap0, strokeJoin0, strokeMiter1000_0, ...]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLIP_PATH}: {@code [op, 24 + pathDataLength * 4, flags,
          *     clipOp, fillType, pathDataLength, pathVerb0, ...]}, where path data is a sequence of
          *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000.</li>
