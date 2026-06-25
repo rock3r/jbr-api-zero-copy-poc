@@ -583,6 +583,8 @@ public interface JBRSkia {
     /** Supports compact transformed delta-packed closed-polyline stroke records. */
     long COMMAND_CAP64_HIGH_SAVE_TRANSLATE_ROTATE_TRANSLATE_STROKE_CLOSED_POLYLINE_DELTA_RESTORE =
             Long.parseLong("36028797018963968");
+    /** Supports compact adjacent fill-rect records. */
+    long COMMAND_CAP64_HIGH_FILL_RECT_RUN = Long.parseLong("72057594037927936");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -1081,6 +1083,10 @@ public interface JBRSkia {
      * Command-list operation: stroke a transformed closed polyline path from packed signed-short deltas.
      */
     int COMMAND_SAVE_TRANSLATE_ROTATE_TRANSLATE_STROKE_CLOSED_POLYLINE_DELTA_RESTORE = Integer.parseInt("107");
+    /**
+     * Command-list operation: fill adjacent rectangles.
+     */
+    int COMMAND_FILL_RECT_RUN = Integer.parseInt("108");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1596,6 +1602,8 @@ public interface JBRSkia {
          *     half.</li>
          *     <li>{@link JBRSkia#COMMAND_STROKE_OVAL_RUN}: {@code [op, 16 + ovalCount * 36, flags, ovalCount,
          *     argb0, x0, y0, width0, height0, strokeWidth0, strokeCap0, strokeJoin0, strokeMiter1000_0, ...]}</li>
+         *     <li>{@link JBRSkia#COMMAND_FILL_RECT_RUN}: {@code [op, 16 + rectCount * 24, flags, rectCount,
+         *     argb0, x0, y0, width0, height0, radius0, ...]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLIP_PATH}: {@code [op, 24 + pathDataLength * 4, flags,
          *     clipOp, fillType, pathDataLength, pathVerb0, ...]}, where path data is a sequence of
          *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000.</li>
