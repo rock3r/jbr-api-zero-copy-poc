@@ -560,6 +560,9 @@ public interface JBRSkia {
     /** Supports compact translated-layer/nested translated-save plus full-source image restoreN records. */
     long COMMAND_CAP64_HIGH_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE_DRAW_IMAGE_REF_FULL_RESTORE_N =
             Long.parseLong("35184372088832");
+    /** Supports compact translated-layer/image-restoreN plus translated-layer/nested translated-save records. */
+    long COMMAND_CAP64_HIGH_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE_DRAW_IMAGE_REF_FULL_RESTORE_N_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE =
+            Long.parseLong("70368744177664");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -1019,6 +1022,12 @@ public interface JBRSkia {
      * then restore multiple saves.
      */
     int COMMAND_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE_DRAW_IMAGE_REF_FULL_RESTORE_N = Integer.parseInt("96");
+    /**
+     * Command-list operation: create a translated layer and nested translated save, draw a full-source image reference,
+     * restore multiple saves, then create another translated layer and nested translated save.
+     */
+    int COMMAND_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE_DRAW_IMAGE_REF_FULL_RESTORE_N_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE =
+            Integer.parseInt("97");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1505,6 +1514,12 @@ public interface JBRSkia {
          *     {@code [op, 76, imageFlags, layerDx1000, layerDy1000, layerX, layerY, layerWidth, layerHeight,
          *     alpha1000, nestedDx1000, nestedDy1000, dstLeft1000, dstTop1000, dstRight1000, dstBottom1000,
          *     cacheKeyHigh, cacheKeyLow, extraRestoreCount]}</li>
+         *     <li>{@link JBRSkia#COMMAND_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE_DRAW_IMAGE_REF_FULL_RESTORE_N_SAVE_TRANSLATE_LAYER_SAVE_TRANSLATE}:
+         *     {@code [op, 112, imageFlags, layerDx1000, layerDy1000, layerX, layerY, layerWidth, layerHeight,
+         *     alpha1000, nestedDx1000, nestedDy1000, dstLeft1000, dstTop1000, dstRight1000, dstBottom1000,
+         *     cacheKeyHigh, cacheKeyLow, extraRestoreCount, nextLayerDx1000, nextLayerDy1000, nextLayerX,
+         *     nextLayerY, nextLayerWidth, nextLayerHeight, nextAlpha1000, nextNestedDx1000,
+         *     nextNestedDy1000]}</li>
          *     <li>{@link JBRSkia#COMMAND_CLIP_PATH}: {@code [op, 24 + pathDataLength * 4, flags,
          *     clipOp, fillType, pathDataLength, pathVerb0, ...]}, where path data is a sequence of
          *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000.</li>
