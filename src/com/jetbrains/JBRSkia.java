@@ -1064,7 +1064,7 @@ public interface JBRSkia {
      */
     int COMMAND_STROKE_CLOSED_POLYLINE_DELTA = Integer.parseInt("102");
     /**
-     * Command-list operation: stroke adjacent ovals sharing one solid-color stroke paint.
+     * Command-list operation: stroke adjacent ovals.
      */
     int COMMAND_STROKE_OVAL_RUN = Integer.parseInt("103");
 
