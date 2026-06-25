@@ -580,6 +580,9 @@ public interface JBRSkia {
     /** Supports compact adjacent transformed fill-oval records. */
     long COMMAND_CAP64_HIGH_SAVE_TRANSLATE_ROTATE_TRANSLATE_FILL_OVAL_RESTORE_RUN =
             Long.parseLong("18014398509481984");
+    /** Supports compact transformed delta-packed closed-polyline stroke records. */
+    long COMMAND_CAP64_HIGH_SAVE_TRANSLATE_ROTATE_TRANSLATE_STROKE_CLOSED_POLYLINE_DELTA_RESTORE =
+            Long.parseLong("36028797018963968");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -1074,6 +1077,10 @@ public interface JBRSkia {
      * Command-list operation: draw adjacent transformed filled ovals.
      */
     int COMMAND_SAVE_TRANSLATE_ROTATE_TRANSLATE_FILL_OVAL_RESTORE_RUN = Integer.parseInt("106");
+    /**
+     * Command-list operation: stroke a transformed closed polyline path from packed signed-short deltas.
+     */
+    int COMMAND_SAVE_TRANSLATE_ROTATE_TRANSLATE_STROKE_CLOSED_POLYLINE_DELTA_RESTORE = Integer.parseInt("107");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1577,6 +1584,10 @@ public interface JBRSkia {
          *     <li>{@link JBRSkia#COMMAND_SAVE_TRANSLATE_ROTATE_TRANSLATE_FILL_OVAL_RESTORE_RUN}: {@code [op,
          *     16 + ovalCount * 40, flags, ovalCount, dx1000_0, dy1000_0, degrees1000_0, nestedDx1000_0,
          *     nestedDy1000_0, argb0, x0, y0, width0, height0, ...]}</li>
+         *     <li>{@link JBRSkia#COMMAND_SAVE_TRANSLATE_ROTATE_TRANSLATE_STROKE_CLOSED_POLYLINE_DELTA_RESTORE}:
+         *     {@code [op, 60 + pointCount * 4, flags, dx1000, dy1000, degrees1000, nestedDx1000, nestedDy1000, argb,
+         *     strokeWidth, strokeCap, strokeJoin, strokeMiter1000, pointCount, startX1000, startY1000,
+         *     packedDxDy...]}</li>
          *     <li>{@link JBRSkia#COMMAND_STROKE_CLOSED_POLYLINE}: {@code [op, 36 + pointCount * 8, flags, argb,
          *     strokeWidth, strokeCap, strokeJoin, strokeMiter1000, pointCount, x0, y0, ...]}</li>
          *     <li>{@link JBRSkia#COMMAND_STROKE_CLOSED_POLYLINE_DELTA}: {@code [op, 40 + pointCount * 4, flags, argb,
