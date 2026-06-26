@@ -588,6 +588,8 @@ public interface JBRSkia {
     /** Supports compact clear-rect plus full-source image draw plus round-rectangle draw records. */
     long COMMAND_CAP64_HIGH_CLEAR_DRAW_IMAGE_REF_FULL_DRAW_ROUND_RECT =
             Long.parseLong("144115188075855872");
+    /** Supports compact saveLayer plus clipPath records. */
+    long COMMAND_CAP64_HIGH_SAVE_LAYER_CLIP_PATH = Long.parseLong("576460752303423488");
 
     /**
      * Command-list operation: clear/fill the destination with one ARGB color.
@@ -1094,6 +1096,10 @@ public interface JBRSkia {
      * Command-list operation: clear a rectangle, draw a full-source image reference, then draw a round rectangle.
      */
     int COMMAND_CLEAR_DRAW_IMAGE_REF_FULL_DRAW_ROUND_RECT = Integer.parseInt("109");
+    /**
+     * Command-list operation: save a layer and clip it with a path.
+     */
+    int COMMAND_SAVE_LAYER_CLIP_PATH = Integer.parseInt("111");
 
     /**
      * Effect descriptor type: tint color filter.
@@ -1615,6 +1621,10 @@ public interface JBRSkia {
          *     clearX, clearY, clearWidth, clearHeight, imageFlags, dstLeft1000, dstTop1000, dstRight1000,
          *     dstBottom1000, cacheKeyHigh, cacheKeyLow, paintStyle, argb, left1000, top1000, right1000, bottom1000,
          *     radiusX1000, radiusY1000, strokeWidth, strokeCap, strokeJoin, strokeMiter1000]}</li>
+         *     <li>{@link JBRSkia#COMMAND_SAVE_LAYER_CLIP_PATH}: {@code [op, 44 + pathDataLength * 4, flags,
+         *     layerX, layerY, layerWidth, layerHeight, alpha1000, clipOp, fillType, pathDataLength,
+         *     pathVerb0, ...]}, where path data is a sequence of {@code COMMAND_PATH_VERB_*} records using
+         *     fixed-point coordinates scaled by 1000.</li>
          *     <li>{@link JBRSkia#COMMAND_CLIP_PATH}: {@code [op, 24 + pathDataLength * 4, flags,
          *     clipOp, fillType, pathDataLength, pathVerb0, ...]}, where path data is a sequence of
          *     {@code COMMAND_PATH_VERB_*} records using fixed-point coordinates scaled by 1000.</li>
