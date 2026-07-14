@@ -49,8 +49,14 @@ public interface JBRSkia {
 
     /**
      * Fingerprint of the Skia build configuration expected by this PoC bridge.
+     * Platform-derived so it stays in lockstep with the native backend the
+     * runtime loads (Metal on macOS, Direct3D on Windows).
      */
-    String SKIA_FLAGS_HASH = "macos-release-metal-poc:" + Integer.parseInt("1");
+    String SKIA_FLAGS_HASH =
+            (System.getProperty("os.name", "").toLowerCase(java.util.Locale.ROOT).contains("win")
+                    ? "windows-release-d3d-poc:"
+                    : "macos-release-metal-poc:")
+            + Integer.parseInt("1");
 
     /**
      * Exact runtime build identity. This field intentionally uses a non-constant initializer so
