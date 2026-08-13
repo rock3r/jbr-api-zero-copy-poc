@@ -30,6 +30,17 @@ public interface SharedTextures {
     public final static int METAL_TEXTURE_TYPE = 1;
 
     /**
+     * Windows / Direct3D 9Ex pipeline: shared Direct3D 11 textures are supported.
+     * The {@code texture} value passed to {@link #wrapTexture} is a pointer to an
+     * {@code ID3D11Texture2D} created with {@code D3D11_RESOURCE_MISC_SHARED}
+     * (legacy shared handle) of format {@code DXGI_FORMAT_B8G8R8A8_UNORM} on the
+     * same adapter as the Java2D device; the pipeline opens its shared handle on
+     * the Java2D Direct3D 9Ex device. Requires the runtime flags
+     * {@code -Dsun.java2d.d3d=true} and {@code -Dsun.java2d.d3d9ex=true}.
+     */
+    public final static int D3D9EX_SHARED_HANDLE_TEXTURE_TYPE = 2;
+
+    /**
      * Returns the texture type supported by the current rendering pipeling.
      *
      * @return the type of shared texture supported.
