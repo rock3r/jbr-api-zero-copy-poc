@@ -40,7 +40,7 @@ public interface JBRSkia {
      * Java-visible version of the native interop metadata block. Bump when the native service
      * identity or lifecycle contract changes independently of the command stream ABI.
      */
-    int NATIVE_ABI_VERSION = Integer.parseInt("3");
+    int NATIVE_ABI_VERSION = Integer.parseInt("5");
 
     /**
      * Pinned Skia revision used by this PoC bridge.
